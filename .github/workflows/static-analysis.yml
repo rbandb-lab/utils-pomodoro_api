@@ -1,4 +1,4 @@
-name: Code style
+name: Static analysis
 on:
   push:
     branches:
@@ -13,14 +13,15 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  php-cs-fixer:
-    name: Code style with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies
-    runs-on: 'ubuntu-latest'
+  phpstan:
+    name: Static analysis with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies - ${{ matrix.os }} OS
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
         php-versions: ['8.0']
         composer-dependencies: ['highest']
+        os: ['ubuntu-latest']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,9 +30,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: zip, redis, pcntl
+          extensions: zip, pcntl
         env:
           update: true
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v1"
@@ -39,5 +43,5 @@ jobs:
           dependency-versions: ${{ matrix.composer-dependencies }}
           composer-options: "--prefer-stable"
 
-      - name: PHP CS Fixer
-        run: php vendor/bin/php-cs-fixer fix src --allow-risky=yes --dry-run
+      - name: Run PHPStan
+        run: php vendor/bin/phpstan analyze src --xdebug
