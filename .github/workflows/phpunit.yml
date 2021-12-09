@@ -1,0 +1,58 @@
+name: PHPUnit
+on:
+  push:
+    branches:
+      - main
+      - prototype
+      - dev
+      - feat/ci
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  phpunit:
+    name: PHPUnit with PHP ${{ matrix.php-versions }} - ${{ matrix.composer-dependencies }} dependencies - ${{ matrix.os }} OS
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: ['8.0']
+        composer-dependencies: ['highest']
+        os: ['ubuntu-latest']
+    services:
+      mailhog:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: zip, pcntl
+        env:
+          update: true
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v1"
+        with:
+          dependency-versions: ${{ matrix.composer-dependencies }}
+
+      - name: Run PHPUnit
+        run: php vendor/bin/phpunit tests -v
+        env:
+          MAILER_DSN: 'redis://127.0.0.1:6379/_symfony_scheduler_tasks'
+
+      - name: Cache PHPUnit result
+        uses: actions/cache@v2
+        with:
+          path: ~/.phpunit.result.cache
+          key: ${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ matrix.composer-dependencies }}-${{ hashFiles('**/.phpunit.result.cache') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ matrix.composer-dependencies }}-

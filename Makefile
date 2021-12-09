@@ -52,7 +52,7 @@ app:
 .PHONY: stan
 stan:
 	@if $(DOCKER_ENV); then \
-		php -d memory_limit=-1 ./vendor/bin/phpstan analyse -l 5 public src translations; \
+		php -d memory_limit=-1 ./vendor/bin/phpstan analyse -l 5 public src tests translations; \
 	else \
 		$(RUN_IN_CONTAINER) $(MAKE) $@ ; \
 	fi
