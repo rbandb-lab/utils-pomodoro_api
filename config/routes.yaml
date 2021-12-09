@@ -1,0 +1,9 @@
+home:
+  path: /home
+  controller: Symfony5\Http\UI\Action\HomeAction
+  methods: ['GET']
+
+validate:
+  path: /validate/{token}
+  controller: Symfony5\Http\UI\Action\ValidateRegistrationAction
+  methods: ['GET']

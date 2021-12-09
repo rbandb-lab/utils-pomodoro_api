@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+
+  pomodoro_fpm:
+    volumes:
+      - "./.docker/php/conf.d/symfony.dev.ini:/usr/local/etc/php/conf.d/symfony.ini:ro"

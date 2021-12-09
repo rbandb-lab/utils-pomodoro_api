@@ -1,0 +1,18 @@
+framework:
+    messenger:
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            failed: 'doctrine://default?queue_name=failed'
+            # sync: 'sync://'
+
+        default_bus: command.bus
+        buses:
+            command.bus: ~
+            query.bus: ~
+            event.bus: ~
+
+        routing:
+            # Route your messages to the transports
+            # 'App\Message\YourMessage': async
+#            Pomodoro\Domain\Event\Worker\Async\RegistrationSubmitted: async

@@ -1,0 +1,18 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
+
+        transports:
+            async: 'in-memory://'
+            async_priority_high: 'in-memory://'
+
+        default_bus: command.bus
+        buses:
+            command.bus: ~
+            query.bus: ~
+            event.bus: ~
+
+        routing:
+            # Route your messages to the transports
+            # 'App\Message\YourMessage': async

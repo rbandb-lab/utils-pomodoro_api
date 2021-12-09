@@ -1,0 +1,18 @@
+default:
+    suites:
+        default:
+            contexts:
+                - PomodoroTests\Behat\AuthContext
+                - PomodoroTests\Behat\ActivityInventoryContext
+                - PomodoroTests\Behat\DemoContext
+                - PomodoroTests\Behat\EmailContext
+                - PomodoroTests\Behat\RegistrationContext
+                - PomodoroTests\Behat\ScheduleContext
+                - PomodoroTests\Behat\TasksContext
+                - PomodoroTests\Behat\WorkerContext
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: tests/bootstrap.php
+            kernel:
+                class: Symfony5\Kernel
