@@ -11,6 +11,8 @@ use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Pomodoro\Domain\Worker\Factory\RegistrationTokenFactory;
 use Pomodoro\Domain\Worker\Factory\WorkerFactory;
+use Pomodoro\Domain\Worker\Model\CycleParameters;
+use Pomodoro\Domain\Worker\Model\CycleParametersValidator;
 use Pomodoro\SharedKernel\Error\Error;
 use Pomodoro\SharedKernel\Service\EmailValidator;
 use Pomodoro\SharedKernel\Service\IdGenerator;
@@ -46,24 +48,38 @@ final class Register
         $response = new RegisterResponse();
         $validation = $this->validateRequest($request, $response);
         if (true === $validation) {
-            $this->saveWorker($request, $response);
+            $cycleValid = $this->cycleParameters($request, $response);
+            if ($cycleValid) {
+                $this->saveWorker($request, $response);
+            }
+        }
+        $presenter->present($response);
+    }
+
+    public function cycleParameters($request, $response): bool
+    {
+        $defaultCycleParameters = $this->defaultCycleParameters;
+        $request->pomodoroDuration = $request->pomodoroDuration ?? (int) $defaultCycleParameters['pomodoroDuration'];
+        $request->shortBreakDuration = $request->shortBreakDuration ?? (int) $defaultCycleParameters['shortBreakDuration'];
+        $request->longBreakDuration = $request->longBreakDuration ?? (int) $defaultCycleParameters['longBreakDuration'];
+        $request->startFirstTaskAfter = $request->startFirstTaskAfter ?? (int) $defaultCycleParameters['startFirstTaskAfter'];
+
+        $cycleParameters = new CycleParameters(
+            $request->pomodoroDuration,
+            $request->shortBreakDuration,
+            $request->longBreakDuration,
+            $request->startFirstTaskAfter,
+        );
+
+
+        $validator = new CycleParametersValidator();
+        $result = $validator->validate($cycleParameters);
+
+        if ($result !== true) {
+            $response->errors[] = $result;
         }
 
-        $presenter->present(
-            $response->withId(
-                $request->id,
-                [
-                    new RegistrationSubmitted(
-                        $request->id,
-                        RegistrationSubmitted::class,
-                        [
-                            'email' => $request->email,
-                            'token' => $response->token,
-                        ]
-                    ),
-                ]
-            )
-        );
+        return true;
     }
 
     private function validateRequest(RegisterRequest $request, RegisterResponse $response): bool
@@ -97,7 +113,6 @@ final class Register
                 ->verifyNow();
         } catch (LazyAssertionException $exception) {
             $exceptions = $exception->getErrorExceptions();
-
             foreach ($exceptions as $subException) {
                 $response->errors[] = new Error($subException->getPropertyPath(), $subException->getMessage());
             }
@@ -111,10 +126,7 @@ final class Register
     private function saveWorker(RegisterRequest $request, RegisterResponse $response): void
     {
         $request->password = $this->workerFactory->hashPassword($request->password);
-        $worker = $this->workerFactory->createFromRequest(
-            $request,
-            $this->defaultCycleParameters
-        );
+        $worker = $this->workerFactory->createFromRequest($request);
 
         $inventoryId = $this->idGenerator->createId();
         $worker = $this->workerFactory->instanciateInventory($inventoryId, $worker);
@@ -124,9 +136,16 @@ final class Register
         try {
             $this->workerRepository->save($worker);
             $response->workerId = $request->id;
-            $response->token = $token->getToken();
+            $response->events[] = new RegistrationSubmitted(
+                $worker->getId(),
+                RegistrationSubmitted::class,
+                [
+                    'email' => $worker->getUsername(),
+                    'token' => $token->getToken()
+                ]
+            );
         } catch (\Exception $exception) {
-            $response->errors[] = new Error('persistency', __METHOD__.$exception->getMessage());
+            $response->errors[] = new Error('save-worker', __METHOD__.' '.$exception->getMessage());
         }
     }
 }

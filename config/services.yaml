@@ -8,6 +8,8 @@ parameters:
     default_short_break_duration: '%env(DEFAULT_SHORT_BREAK_DURATION)%'
     default_long_break_duration: '%env(DEFAULT_LONG_BREAK_DURATION)%'
     default_first_task_start_after: '%env(DEFAULT_FIRST_TASK_START_AFTER)%'
+    accepted_locales: ['fr', 'en', 'ko']
+    accepted_content_types: ['application/json', 'application/xml']
 
 services:
     # default configuration for services in *this* file
@@ -40,3 +42,10 @@ services:
         Pomodoro\Domain\Event\EventHandler:
             tags:
                 - { name: messenger.message_handler, bus: event.bus }
+
+    Symfony5\Http\UI\Validation\HttpRequestValidator:
+        arguments: ['%accepted_locales%','%accepted_content_types%']
+
+
+    Symfony\Component\PasswordHasher\PasswordHasherInterface:
+        class: Symfony\Component\PasswordHasher\Hasher\SodiumPasswordHasher

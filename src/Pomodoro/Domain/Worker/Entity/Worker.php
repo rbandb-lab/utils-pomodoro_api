@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\Entity;
 
+use Pomodoro\Domain\Worker\Model\CycleParameters;
+
 final class Worker
 {
     private string $id;

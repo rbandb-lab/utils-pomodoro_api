@@ -8,7 +8,7 @@ use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Pomodoro\Domain\Worker\Factory\CalendarTaskFactory;
 use Pomodoro\SharedKernel\Service\IdGenerator;
 
-class AddCalendarTask
+final class AddCalendarTask
 {
     private IdGenerator $idGenerator;
     private WorkerRepository $workerRepository;

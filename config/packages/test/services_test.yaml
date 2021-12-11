@@ -1,0 +1,62 @@
+parameters:
+    default_pomodoro_duration: '%env(DEFAULT_POMODORO_DURATION)%'
+    default_short_break_duration: '%env(DEFAULT_SHORT_BREAK_DURATION)%'
+    default_long_break_duration: '%env(DEFAULT_LONG_BREAK_DURATION)%'
+    default_first_task_start_after: '%env(DEFAULT_FIRST_TASK_START_AFTER)%'
+    mailhog_api: '%env(MAILHOG_API)%'
+    mailhog_clean: '%env(MAILHOG_CLEAN)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $mailhogApi: '%mailhog_api%'
+            $mailhogClean: '%mailhog_clean%'
+            $defaultCycleParameters:
+                pomodoroDuration: '%default_pomodoro_duration%'
+                shortBreakDuration: '%default_short_break_duration%'
+                longBreakDuration: '%default_long_break_duration%'
+                startFirstTaskAfter: '%default_first_task_start_after%'
+
+    PomodoroTests\Acceptance\Behat\:
+        resource: '../../../tests/Acceptance/Behat/*'
+
+    Pomodoro\Domain\Worker\Service\AuthenticationGateway:
+        class: 'PomodoroTests\_Mock\Worker\Service\AuthenticationGateway'
+
+    Pomodoro\Domain\Worker\Entity\WorkerRepository:
+        class: 'PomodoroTests\_Mock\Worker\Entity\InMemoryWorkerRepository'
+
+    Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository:
+        class: 'PomodoroTests\_Mock\Worker\Entity\InMemoryActivityInventoryRepository'
+
+    Pomodoro\SharedKernel\Service\EmailValidator:
+        class: 'Symfony5\Validator\EmailValidator'
+
+    Pomodoro\SharedKernel\Service\IdGenerator:
+        class: 'Symfony5\Service\IdGenerator\IdGenerator'
+
+    Symfony\Component\PasswordHasher\PasswordHasherInterface:
+        class: 'Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher'
+
+    sf_password_hasher:
+        class: 'Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher'
+        public: true
+
+    Symfony5\Service\PasswordHasher\PasswordHasher:
+        arguments:
+            - '@sf_password_hasher'
+
+
+    symfony.fixtures_loader:
+        class: Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader
+        public: true
+
+    _instanceof:
+        Pomodoro\Domain\Event\EventHandler:
+            tags:
+                - { name: messenger.message_handler, bus: event.bus }
+        Doctrine\Bundle\FixturesBundle\Fixture:
+            tags:
+                - { name: doctrine.fixture.orm }

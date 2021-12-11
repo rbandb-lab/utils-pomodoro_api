@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\UseCase\Parameters;
 
-use Pomodoro\Domain\Worker\Entity\CycleParameters;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
-use Pomodoro\SharedKernel\Error\Error;
+use Pomodoro\Domain\Worker\Model\CycleParameters;
 
 final class UpdateParameters
 {

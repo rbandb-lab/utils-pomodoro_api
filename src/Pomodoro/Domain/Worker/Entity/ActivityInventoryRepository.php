@@ -8,5 +8,5 @@ interface ActivityInventoryRepository
 
     public function get(string $id): ?ActivityInventory;
 
-    public function save(ActivityInventory $inventory): void;
+    public function save(ActivityInventoryInterface $inventory): void;
 }

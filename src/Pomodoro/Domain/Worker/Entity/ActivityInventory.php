@@ -23,8 +23,11 @@ final class ActivityInventory implements ActivityInventoryInterface
         $this->id = $id;
         $this->workerId = $workerId;
         $this->todoTaskList = new TodoTaskList();
+        $this->todoTaskList->setId($id);
         $this->unplannedTaskList = new UnplannedTaskList();
+        $this->unplannedTaskList->setId($id);
         $this->calendarTaskList = new CalendarTaskList();
+        $this->calendarTaskList->setId($id);
     }
 
     public function getId(): string

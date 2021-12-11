@@ -8,7 +8,7 @@ use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Pomodoro\Domain\Worker\Service\AuthenticationGateway as AuthenticationGatewayInterface;
 
-class AuthenticationGateway implements AuthenticationGatewayInterface
+final class AuthenticationGateway implements AuthenticationGatewayInterface
 {
     private WorkerRepository $workerRepository;
     private ?Worker $authenticatedWorker = null;
@@ -21,9 +21,11 @@ class AuthenticationGateway implements AuthenticationGatewayInterface
     public function authenticate(string $username, string $password): Worker|bool
     {
         $worker = $this->workerRepository->getByUsername($username);
-        if (!$worker) {
+
+        if ($worker === null) {
             return false;
         }
+
         if ($this->checkCredentials($worker, $password)) {
             $this->authenticatedWorker = $worker;
 
@@ -35,7 +37,7 @@ class AuthenticationGateway implements AuthenticationGatewayInterface
 
     public function checkCredentials(?Worker $worker, string $password): bool
     {
-        if ($worker) {
+        if ($worker !== null) {
             return $worker->getUsername() === trim($worker->getUsername()) && ($worker->getPassword() === trim($password) || password_verify($password, $worker->getPassword()));
         }
 

@@ -7,7 +7,7 @@ namespace Pomodoro\Domain\Worker\Factory;
 use Pomodoro\Domain\Planning\Entity\CalendarTask;
 use Pomodoro\Domain\Planning\UseCase\AddCalendarTask\AddCalendarTaskRequest;
 
-class CalendarTaskFactory
+final class CalendarTaskFactory
 {
     public static function createFromRequest(AddCalendarTaskRequest $request): CalendarTask
     {

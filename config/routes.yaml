@@ -1,9 +1,54 @@
+#INFRA
 home:
-  path: /home
-  controller: Symfony5\Http\UI\Action\HomeAction
+  path: /
+  controller: Symfony5\Http\UI\Action\Infra\HomeAction
   methods: ['GET']
+
+register:
+  path: /api/registration
+  controller: Symfony5\Http\UI\Action\Infra\RegisterAction
+  methods: [ 'POST' ]
+
+parameters:
+  path: /api/params
+  controller: Symfony5\Http\UI\Action\Infra\ParametersAction
+  methods: ['POST']
 
 validate:
   path: /validate/{token}
-  controller: Symfony5\Http\UI\Action\ValidateRegistrationAction
+  controller: Symfony5\Http\UI\Action\Infra\ValidateEmailAction
   methods: ['GET']
+
+
+#PLANNING
+add_calendar_task:
+  path: /api/calendar-task
+  controller: Symfony5\Http\UI\Action\Planning\AddCalendarTaskAction
+  methods: ['POST']
+
+add_todo_task:
+  path: /api/todo-task
+  controller: Symfony5\Http\UI\Action\Planning\AddTodoTaskAction
+  methods: ['POST']
+
+add_unplanned_task:
+  path: /api/unplanned-task
+  controller: Symfony5\Http\UI\Action\Planning\AddUnplannedTaskAction
+  methods: ['POST']
+
+
+#TRACKING
+timer_start:
+  path: /api/timer/{taskId}
+  controller: Symfony5\Http\UI\Action\Tracking\StartTimerAction
+  methods: ['GET']
+
+timer_void:
+  path: /api/timer/{taskId}
+  controller: Symfony5\Http\UI\Action\Tracking\StartTimerAction
+  methods: ['POST']
+
+manage_interruption:
+  path: /api/interruption
+  controller: Symfony5\Http\UI\Action\Tracking\InterruptionAction
+  methods: ['POST']

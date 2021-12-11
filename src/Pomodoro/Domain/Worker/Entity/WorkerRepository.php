@@ -18,5 +18,5 @@ interface WorkerRepository
 
     public function remove(Worker $worker): void;
 
-    public function findTokenByValue(string $workerId, string $token): ?AbstractToken;
+    public function findTokenByValue(string $token): ?Worker;
 }
