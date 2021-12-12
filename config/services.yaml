@@ -31,6 +31,7 @@ services:
 
     Symfony5\:
         resource: '../src/Infrastructure/Symfony5/'
+        exclude: '../src/Infrastructure/Symfony5/Persistence/ORM/Doctrine/Entity/*'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -11,7 +11,7 @@ use Pomodoro\Domain\Planning\Model\UnplannedTaskListInterface;
 /**
  * @ORM\Entity()
  */
-final class ActivityInventory
+class ActivityInventory
 {
     /**
      * @ORM\Id

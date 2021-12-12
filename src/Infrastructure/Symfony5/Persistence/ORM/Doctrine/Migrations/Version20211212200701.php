@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211212152605 extends AbstractMigration
+final class Version20211212200701 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,7 @@ final class Version20211212152605 extends AbstractMigration
         $this->addSql('CREATE TABLE calendar_task (id VARCHAR(36) NOT NULL, task_list_id VARCHAR(36) DEFAULT NULL, category_id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E85871224F3C61 ON calendar_task (task_list_id)');
         $this->addSql('CREATE TABLE calendar_task_list (id VARCHAR(36) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE orm_worker (id VARCHAR(36) NOT NULL, activity_inventory_id VARCHAR(36) DEFAULT NULL, username VARCHAR(120) NOT NULL, first_name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, pomodoro_duration INT NOT NULL, short_break_duration INT NOT NULL, long_break_duration INT NOT NULL, start_first_task_in INT NOT NULL, email_validated BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE orm_worker (id VARCHAR(36) NOT NULL, activity_inventory_id VARCHAR(36) DEFAULT NULL, username VARCHAR(120) NOT NULL, first_name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, pomodoro_duration INT NOT NULL, short_break_duration INT NOT NULL, long_break_duration INT NOT NULL, start_first_task_in INT NOT NULL, email_validated BOOLEAN NOT NULL, roles JSON NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AD30EE2D566518 ON orm_worker (activity_inventory_id)');
         $this->addSql('CREATE TABLE todo_task (id VARCHAR(36) NOT NULL, task_list_id VARCHAR(36) DEFAULT NULL, category_id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_DAFBD3A224F3C61 ON todo_task (task_list_id)');

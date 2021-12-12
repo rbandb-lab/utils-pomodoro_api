@@ -4,6 +4,11 @@ home:
   controller: Symfony5\Http\UI\Action\Infra\HomeAction
   methods: ['GET']
 
+api_login:
+  path: /api/login
+  controller: Symfony5\Http\UI\Action\Infra\LoginAction
+  methods: ['POST']
+
 register:
   path: /api/registration
   controller: Symfony5\Http\UI\Action\Infra\RegisterAction

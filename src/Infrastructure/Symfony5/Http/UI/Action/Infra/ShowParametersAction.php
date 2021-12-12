@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Symfony5\Http\UI\Action\Infra;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ParametersAction
+final class ShowParametersAction
 {
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
         return new JsonResponse();
     }

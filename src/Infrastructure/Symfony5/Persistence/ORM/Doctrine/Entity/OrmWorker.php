@@ -8,11 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Pomodoro\Domain\Worker\Model\CycleParameters;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
+ * @method string getUserIdentifier()
  */
-final class OrmWorker
+final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -80,10 +83,10 @@ final class OrmWorker
     private ActivityInventory $activityInventory;
 
     /**
-     * @param string $id
-     * @param string $username
-     * @param string $firstName
+     * @ORM\Column(type="json")
      */
+    private array $roles;
+
     public function __construct(string $id, string $username, string $firstName)
     {
         $this->id = $id;
@@ -91,6 +94,7 @@ final class OrmWorker
         $this->firstName = $firstName;
         $this->tokens = new ArrayCollection();
         $this->emailValidated = false;
+        $this->roles[] = "ROLE_USER";
     }
 
     /**
@@ -229,5 +233,25 @@ final class OrmWorker
     public function setStartFirstTaskIn(int $startFirsTaskIn): void
     {
         $this->startFirstTaskIn = $startFirsTaskIn;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
     }
 }
