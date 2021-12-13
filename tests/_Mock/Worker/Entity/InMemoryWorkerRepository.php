@@ -84,4 +84,9 @@ class InMemoryWorkerRepository implements WorkerRepository
 
         return null;
     }
+
+    public function updateCycleParametersForWorker(Worker $worker)
+    {
+        $this->workers[$worker->getId()] = $worker;
+    }
 }
