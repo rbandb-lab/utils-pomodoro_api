@@ -28,12 +28,10 @@ class InMemoryWorkerRepository implements WorkerRepository
 
     public function save(Worker $worker): void
     {
-        if (!in_array($worker->getId(), $this->workers)) {
+        if (!in_array($worker->getId(), $this->workers, true)) {
             $this->workers[$worker->getId()] = $worker;
-
-            if ($inventory = $worker->getActivityInventory()) {
-                $this->inventoryRepository->save($inventory);
-            }
+            $inventory = $worker->getActivityInventory();
+            $this->inventoryRepository->save($inventory);
         }
         assertInstanceOf(Worker::class, $this->workers[$worker->getId()]);
     }
@@ -70,17 +68,20 @@ class InMemoryWorkerRepository implements WorkerRepository
         assertInstanceOf(Worker::class, $this->workers[$worker->getId()]);
     }
 
-    public function findTokenByValue(string $workerId, string $value): ?AbstractToken
+    public function findTokenByValue(string $value): ?Worker
     {
-        $worker = $this->get($workerId);
-        if ($worker instanceof Worker) {
+        $workers = $this->workers;
+        foreach ($workers as $worker) {
             $tokens = $worker->getTokens();
             $found = array_filter($tokens, function (AbstractToken $token) use ($value) {
                 return $token->getToken() === $value;
             });
+
             if (!empty($found)) {
-                return array_shift($found);
+                return $worker;
             }
         }
+
+        return null;
     }
 }

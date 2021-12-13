@@ -48,17 +48,17 @@ Feature: I register as a worker by sending my information and I receive a valida
     Given no users exists
     When I register with parameters:
       | first_name   |  email               |   password        |   pomodoro_duration   |    long_break_duration    |   short_break_duration   |   start_first_task_in   |
-      | toto         |  toto@example.com    |   12345678        |   10                  |    10                     |   10                      |   10                   |
+      | toto         |  toto@example.com    |   12345678        |   1500                |    1000                   |   500                    |   500                   |
     Given the worker "toto@example.com" with password "12345678" is authenticated
     Then the response payload should contain no errors
     And I access my profile parameters
     Then the response payload should contain parameters
     And the "parameters" node should contains the associative array:
       | key                 | value   |
-      | pomodoroDuration    | 10      |
-      | shortBreakDuration  | 10      |
-      | longBreakDuration   | 10      |
-      | startFirstTaskIn    | 10      |
+      | pomodoroDuration    | 1500    |
+      | shortBreakDuration  | 500     |
+      | longBreakDuration   | 1000    |
+      | startFirstTaskIn    | 500     |
 
   @register-default-params
   Scenario: I register with my email and password and my cycle parameters are set

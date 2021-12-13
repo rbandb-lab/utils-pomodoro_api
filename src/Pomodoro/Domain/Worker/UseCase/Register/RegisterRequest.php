@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\UseCase\Register;
 
-class RegisterRequest
+final class RegisterRequest
 {
     public string $email;
     public string $firstName;

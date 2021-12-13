@@ -2,7 +2,9 @@
 
 namespace Pomodoro\Domain\Worker\UseCase\ValidateEmail;
 
-interface ValidateEmailPresenter
+use Pomodoro\Presentation\PresenterInterface;
+
+interface ValidateEmailPresenter extends PresenterInterface
 {
     public function present(ValidateEmailResponse $response): void;
 }

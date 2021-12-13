@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Pomodoro\Domain\Worker\UseCase\ValidateEmail;
 
 use Pomodoro\Domain\Worker\Entity\RegistrationToken;
+use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 
-class ValidateEmail
+final class ValidateEmail
 {
     private WorkerRepository $workerRepository;
 
@@ -18,11 +19,10 @@ class ValidateEmail
 
     public function execute(ValidateEmailRequest $request, ValidateEmailPresenter $presenter): void
     {
-        $token = $this->workerRepository->findTokenByValue($request->workerId, $request->token);
+        $worker = $this->workerRepository->findTokenByValue($request->token);
         $response = new ValidateEmailResponse();
 
-        if ($token instanceof RegistrationToken) {
-            $worker = $this->workerRepository->get($token->getWorkerId());
+        if ($worker instanceof Worker) {
             $worker->setEmailValidated(true);
             $response->emailValid = true;
             $this->workerRepository->save($worker);

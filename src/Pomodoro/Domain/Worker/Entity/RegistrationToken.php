@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\Entity;
 
-class RegistrationToken extends AbstractToken
+final class RegistrationToken extends AbstractToken
 {
 }

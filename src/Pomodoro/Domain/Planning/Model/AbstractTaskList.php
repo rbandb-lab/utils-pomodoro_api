@@ -9,6 +9,8 @@ use Pomodoro\Domain\Planning\Entity\TodoTask;
 
 abstract class AbstractTaskList implements TaskList
 {
+    protected string $id;
+
     protected array $tasks = [];
 
     public function getTasks(): array
@@ -33,5 +35,15 @@ abstract class AbstractTaskList implements TaskList
         return [
             'tasks' => $this->getTasks(),
         ];
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
     }
 }

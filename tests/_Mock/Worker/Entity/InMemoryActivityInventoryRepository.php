@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PomodoroTests\_Mock\Worker\Entity;
 
 use Pomodoro\Domain\Worker\Entity\ActivityInventory;
+use Pomodoro\Domain\Worker\Entity\ActivityInventoryInterface;
 use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
 
 class InMemoryActivityInventoryRepository implements ActivityInventoryRepository
@@ -16,9 +17,9 @@ class InMemoryActivityInventoryRepository implements ActivityInventoryRepository
         return array_key_exists($id, $this->inventories) ? $this->inventories[$id] : null;
     }
 
-    public function save(ActivityInventory $inventory): void
+    public function save(ActivityInventoryInterface $inventory): void
     {
-        if (!in_array($inventory->getId(), $this->inventories)) {
+        if (!in_array($inventory->getId(), $this->inventories, true)) {
             $this->inventories[$inventory->getId()] = $inventory;
         }
     }
@@ -29,7 +30,7 @@ class InMemoryActivityInventoryRepository implements ActivityInventoryRepository
             return $inventory->getWorkerId() === $workerId;
         });
 
-        if (!empty($inventories)) {
+        if (count($inventories) > 0) {
             return array_shift($inventories);
         }
 
