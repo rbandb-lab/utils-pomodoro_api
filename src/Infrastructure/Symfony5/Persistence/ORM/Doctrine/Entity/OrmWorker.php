@@ -274,7 +274,7 @@ final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterfa
         return $this->startFirstTaskIn;
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
