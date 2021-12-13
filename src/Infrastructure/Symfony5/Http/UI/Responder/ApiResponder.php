@@ -25,22 +25,33 @@ abstract class ApiResponder
         if ($formErrors !== null && count($formErrors)>0) {
             $data = $formErrors;
             $statusCode = Response::HTTP_BAD_REQUEST;
-        } else {
-            $viewModel = $presenter->viewModel();
-            $data = ['id' => $viewModel->id];
-
-            if (count($viewModel->errors)>0) {
-                $data = $viewModel->errors;
-                $statusCode = Response::HTTP_BAD_REQUEST;
-            }
+            return $this->send($params, $data, $statusCode);
         }
+
+        $viewModel = $presenter->viewModel();
+        if (count($viewModel->errors)>0) {
+            $data = $viewModel->errors;
+            $statusCode = Response::HTTP_BAD_REQUEST;
+            return $this->send($params, $data, $statusCode);
+        }
+
+        $data = $this->viewModelData($viewModel);
         return $this->send($params, $data, $statusCode);
+    }
+
+    public function viewModelData($viewModel): array
+    {
+        return ['id' => $viewModel->id];
     }
 
     private function send(array $params, array $data, int $statusCode): Response
     {
         $response = new Response(null, Response::HTTP_OK);
-        $normalizedData = $this->serializer->normalize($data, 'json', $params);
+
+        $normalizedData = $this->serializer->normalize([
+            'data' => $data
+        ], 'json', $params);
+
         $contentType = $params['content-type'];
         $locale = $params['locale'];
 

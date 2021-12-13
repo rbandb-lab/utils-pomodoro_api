@@ -7,5 +7,6 @@ namespace Pomodoro\Domain\Worker\UseCase\Parameters;
 final class UpdateParametersResponse
 {
     public string $workerId;
+    public array $errors = [];
     public array $parameters = [];
 }

@@ -13,15 +13,11 @@ trait InputValidationTrait
 
     private function validate(Request $request, string $formType, ?bool $clearMissing = true): bool
     {
-        switch ($request->getMethod()) {
-            case 'POST':
-            $requestData = json_decode($request->getContent(), true);
-            break;
-
-            case 'GET':
-            $requestData = $request->query->all();
-            break;
-        }
+        $requestData = match ($request->getMethod()) {
+            'POST' => json_decode($request->getContent(), true),
+            'PUT' => json_decode($request->getContent(), true),
+            'GET' => $request->query->all(),
+        };
 
         $form = $this->formFactory->create($formType);
         $form->submit($requestData, $clearMissing);

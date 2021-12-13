@@ -17,14 +17,18 @@ class CycleParametersValidator implements CycleParametersInterface
                 ->that($cycleParameters->getPomodoroDuration(), 'pomodoroDuration')
                 ->integer('property must be an integer')
                 ->between(25*60, 50*60, 'between 1500 and 3000')
+                ->verifyNow();
+            Assert::lazy()
                 ->that($cycleParameters->getShortBreakDuration(), 'shortBreakDuration')
                 ->integer('property must be an integer')
                 ->between(5*60, 10*60, 'must be between 300 and 600')
-                ->that($cycleParameters->getLongBreakDuration(), 'shortBreakDuration')
+                ->verifyNow();
+            Assert::lazy()
+                ->that($cycleParameters->getLongBreakDuration(), 'longBreakDuration')
                 ->integer('property must be an integer')
                 ->between(15*60, 60*60, 'must be between 900 and 3600')
-                ->that($cycleParameters->getLongBreakDuration(), 'longBreakDuration')
-                ->greaterOrEqualThan($cycleParameters->getShortBreakDuration())
+                ->verifyNow();
+            Assert::lazy()
                 ->that($cycleParameters->getShortBreakDuration(), 'shortBreakDuration')
                 ->lessOrEqualThan($cycleParameters->getPomodoroDuration(), 'must be inferior to pomodoro_duration')
                 ->verifyNow()

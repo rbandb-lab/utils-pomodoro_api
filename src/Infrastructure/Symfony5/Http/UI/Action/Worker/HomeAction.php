@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Symfony5\Http\UI\Action\Infra;
+namespace Symfony5\Http\UI\Action\Worker;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

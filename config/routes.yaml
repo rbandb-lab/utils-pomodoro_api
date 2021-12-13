@@ -1,29 +1,33 @@
 #INFRA
 home:
   path: /
-  controller: Symfony5\Http\UI\Action\Infra\HomeAction
+  controller: Symfony5\Http\UI\Action\Worker\HomeAction
   methods: ['GET']
 
 api_login:
   path: /api/login
-  controller: Symfony5\Http\UI\Action\Infra\LoginAction
+  controller: Symfony5\Http\UI\Action\Worker\LoginAction
   methods: ['POST']
 
 register:
   path: /api/registration
-  controller: Symfony5\Http\UI\Action\Infra\RegisterAction
+  controller: Symfony5\Http\UI\Action\Worker\RegisterAction
   methods: [ 'POST' ]
+
+validate:
+  path: /api/validate/{token}
+  controller: Symfony5\Http\UI\Action\Worker\ValidateEmailAction
+  methods: ['GET']
 
 parameters:
   path: /api/params
-  controller: Symfony5\Http\UI\Action\Infra\ParametersAction
-  methods: ['POST']
-
-validate:
-  path: /validate/{token}
-  controller: Symfony5\Http\UI\Action\Infra\ValidateEmailAction
+  controller: Symfony5\Http\UI\Action\Worker\ShowParametersAction
   methods: ['GET']
 
+update_parameters:
+  path: /api/params
+  controller: Symfony5\Http\UI\Action\Worker\UpdateParametersAction
+  methods: ['PUT']
 
 #PLANNING
 add_calendar_task:

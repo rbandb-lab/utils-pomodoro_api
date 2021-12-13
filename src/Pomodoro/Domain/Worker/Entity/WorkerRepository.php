@@ -19,4 +19,6 @@ interface WorkerRepository
     public function remove(Worker $worker): void;
 
     public function findTokenByValue(string $token): ?Worker;
+
+    public function updateCycleParametersForWorker(Worker $worker);
 }

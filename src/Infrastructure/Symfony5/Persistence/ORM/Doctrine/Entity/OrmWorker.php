@@ -254,4 +254,32 @@ final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterfa
     {
         // TODO: Implement @method string getUserIdentifier()
     }
+
+    public function getLongBreakDuration(): int
+    {
+        return $this->longBreakDuration;
+    }
+
+    public function getPomodoroDuration(): int
+    {
+        return $this->pomodoroDuration;
+    }
+
+    public function getShortBreakDuration(): int
+    {
+        return $this->shortBreakDuration;
+    }
+
+    public function getStartFirstTaskIn(): int
+    {
+        return $this->startFirstTaskIn;
+    }
+
+    public function setParameters(CycleParameters $cycleParameters)
+    {
+        $this->setPomodoroDuration($cycleParameters->getPomodoroDuration());
+        $this->setShortBreakDuration($cycleParameters->getShortBreakDuration());
+        $this->setLongBreakDuration($cycleParameters->getLongBreakDuration());
+        $this->setStartFirstTaskIn($cycleParameters->getStartFirstTaskIn());
+    }
 }

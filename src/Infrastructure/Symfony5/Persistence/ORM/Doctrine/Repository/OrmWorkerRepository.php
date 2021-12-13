@@ -6,7 +6,6 @@ namespace Symfony5\Persistence\ORM\Doctrine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Pomodoro\Domain\Worker\Entity\AbstractToken;
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Symfony5\Persistence\ORM\Doctrine\Factory\OrmWorkerFactory;
@@ -26,7 +25,11 @@ final class OrmWorkerRepository extends ServiceEntityRepository implements Worke
 
     public function get(string $workerId): ?Worker
     {
-        // TODO: Implement get() method.
+        $ormWorker = $this->find($workerId);
+        if ($ormWorker instanceof OrmWorker) {
+            return OrmWorkerFactory::fromOrm($ormWorker);
+        }
+        return null;
     }
 
     public function save(Worker $worker): void
@@ -71,5 +74,15 @@ EOF;
             return OrmWorkerFactory::fromRequestArray($data);
         }
         return null;
+    }
+
+    public function updateCycleParametersForWorker(Worker $worker)
+    {
+        $em = $this->getEntityManager();
+        $ormWorker = $em->find(OrmWorker::class, $worker->getId());
+        $cycleParameters = $worker->getParameters();
+        $ormWorker->setParameters($cycleParameters);
+        $em->persist($ormWorker);
+        $em->flush();
     }
 }
