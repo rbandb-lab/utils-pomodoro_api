@@ -29,7 +29,6 @@ class ShowParametersTest extends WorkerTest implements ShowParametersPresenter
     public function testShowParametersRequest()
     {
         $this->request->withWorkerId('123');
-        self::assertInstanceOf(ShowParametersRequest::class, $this->request);
         self::assertClassHasAttribute('workerId', ShowParametersRequest::class);
     }
 
@@ -45,5 +44,10 @@ class ShowParametersTest extends WorkerTest implements ShowParametersPresenter
         self::assertArrayHasKey('shortBreakDuration', $this->response->parameters);
         self::assertArrayHasKey('longBreakDuration', $this->response->parameters);
         self::assertArrayHasKey('startFirstTaskIn', $this->response->parameters);
+    }
+
+    public function viewModel()
+    {
+        // TODO: Implement viewModel() method.
     }
 }

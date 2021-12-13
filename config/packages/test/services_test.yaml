@@ -30,6 +30,8 @@ services:
 
     Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository:
         class: 'PomodoroTests\_Mock\Worker\Entity\InMemoryActivityInventoryRepository'
+        arguments:
+            - '@Pomodoro\Domain\Worker\Entity\WorkerRepository'
 
     Pomodoro\SharedKernel\Service\EmailValidator:
         class: 'Symfony5\Validator\EmailValidator'

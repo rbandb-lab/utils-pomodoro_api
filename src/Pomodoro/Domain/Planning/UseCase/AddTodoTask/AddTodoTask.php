@@ -4,31 +4,28 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Planning\UseCase\AddTodoTask;
 
-use Pomodoro\Domain\Worker\Entity\WorkerRepository;
-use Pomodoro\Domain\Worker\Factory\TodoTaskFactory;
+use Pomodoro\Domain\Planning\Entity\TodoTask;
+use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
 use Pomodoro\SharedKernel\Service\IdGenerator;
 
-class AddTodoTask
+final class AddTodoTask
 {
-    private WorkerRepository $workerRepository;
     private IdGenerator $idGenerator;
+    private ActivityInventoryRepository $inventoryRepository;
 
     public function __construct(
         IdGenerator $idGenerator,
-        WorkerRepository $workerRepository
+        ActivityInventoryRepository $inventoryRepository
     ) {
         $this->idGenerator = $idGenerator;
-        $this->workerRepository = $workerRepository;
+        $this->inventoryRepository = $inventoryRepository;
     }
 
     public function execute(AddTodoTaskRequest $request, AddTodoTaskPresenter $presenter): void
     {
-        $worker = $this->workerRepository->get($request->workerId);
-        $inventory = $worker->getActivityInventory();
         $request->id = $request->id ?? $this->idGenerator->createId();
-        $task = TodoTaskFactory::createFromRequest($request);
-        $inventory->addTodoTask($task);
-        $this->workerRepository->save($worker);
+        $task = new TodoTask($request->id, $request->name);
+        $this->inventoryRepository->addTodoTaskToWorker($request->workerId, $task);
         $response = new AddTodoTaskResponse();
         $response->id = $task->getId();
         $presenter->present($response);

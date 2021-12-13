@@ -44,7 +44,7 @@ class ActivityInventory
      *     inversedBy="activityInventory",
      *     cascade={"all"}
      * )
-     * @ORM\JoinColumn(name="unplanned_task_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="unplanned_task_list_id", referencedColumnName="id")
      */
     private UnplannedTaskList $unplannedTaskList;
 
@@ -84,27 +84,38 @@ class ActivityInventory
         $this->worker = $worker;
     }
 
-    /**
-     * @param CalendarTaskList $calendarTaskList
-     */
     public function setCalendarTaskList(CalendarTaskList $calendarTaskList): void
     {
         $this->calendarTaskList = $calendarTaskList;
     }
 
-    /**
-     * @param UnplannedTaskList $unplannedTaskList
-     */
     public function setUnplannedTaskList(UnplannedTaskList $unplannedTaskList): void
     {
         $this->unplannedTaskList = $unplannedTaskList;
     }
 
-    /**
-     * @param TodoTaskList $todoTaskList
-     */
     public function setTodoTaskList(TodoTaskList $todoTaskList): void
     {
         $this->todoTaskList = $todoTaskList;
+    }
+
+    public function getWorkerId(): string
+    {
+        return $this->worker->getId();
+    }
+
+    public function getCalendarTaskList(): CalendarTaskList
+    {
+        return $this->calendarTaskList;
+    }
+
+    public function getUnplannedTaskList(): UnplannedTaskList
+    {
+        return $this->unplannedTaskList;
+    }
+
+    public function getTodoTaskList(): TodoTaskList
+    {
+        return $this->todoTaskList;
     }
 }

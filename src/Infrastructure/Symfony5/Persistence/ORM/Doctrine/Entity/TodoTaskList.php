@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Symfony5\Persistence\ORM\Doctrine\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
  */
-final class TodoTaskList
+class TodoTaskList
 {
     /**
      * @ORM\Id
@@ -22,7 +23,8 @@ final class TodoTaskList
     /**
      * @ORM\OneToMany(
      *     targetEntity="Symfony5\Persistence\ORM\Doctrine\Entity\TodoTask",
-     *     mappedBy="taskList"
+     *     mappedBy="taskList",
+     *     cascade={"all"}
      * )
      * @ORM\JoinColumn(name="todo_tasks_id", referencedColumnName="id")
      */
@@ -37,10 +39,25 @@ final class TodoTaskList
      */
     private ActivityInventory $activityInventory;
 
-    public function __construct(string $id, Collection $tasks, ActivityInventory $activityInventory)
+    public function __construct(string $id, ActivityInventory $activityInventory)
     {
         $this->id = $id;
-        $this->tasks = $tasks;
         $this->activityInventory = $activityInventory;
+        $this->tasks = new ArrayCollection();
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getTaskArray(): array
+    {
+        return $this->tasks->toArray();
+    }
+
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
     }
 }

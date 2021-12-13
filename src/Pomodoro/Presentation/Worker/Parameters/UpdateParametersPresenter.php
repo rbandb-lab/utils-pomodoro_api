@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Pomodoro\Presentation\Worker\Parameters;
 
-use Pomodoro\Domain\Worker\UseCase\Parameters\UpdateParametersResponse;
-use Pomodoro\Presentation\PresenterInterface;
 use Pomodoro\Domain\Worker\UseCase\Parameters\UpdateParametersPresenter as UpdateParametersPresenterInterface;
+use Pomodoro\Domain\Worker\UseCase\Parameters\UpdateParametersResponse;
 use Pomodoro\Presentation\Worker\Model\UpdateParametersViewModel;
 
-class UpdateParametersPresenter implements UpdateParametersPresenterInterface, PresenterInterface
+class UpdateParametersPresenter implements UpdateParametersPresenterInterface
 {
     public ?UpdateParametersViewModel $viewModel = null;
 

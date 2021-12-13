@@ -14,8 +14,7 @@ trait InputValidationTrait
     private function validate(Request $request, string $formType, ?bool $clearMissing = true): bool
     {
         $requestData = match ($request->getMethod()) {
-            'POST' => json_decode($request->getContent(), true),
-            'PUT' => json_decode($request->getContent(), true),
+            'POST', 'PUT' => json_decode($request->getContent(), true),
             'GET' => $request->query->all(),
         };
 

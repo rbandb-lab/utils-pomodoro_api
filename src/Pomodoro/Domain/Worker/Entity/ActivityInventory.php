@@ -22,12 +22,9 @@ final class ActivityInventory implements ActivityInventoryInterface
     {
         $this->id = $id;
         $this->workerId = $workerId;
-        $this->todoTaskList = new TodoTaskList();
-        $this->todoTaskList->setId($id);
-        $this->unplannedTaskList = new UnplannedTaskList();
-        $this->unplannedTaskList->setId($id);
-        $this->calendarTaskList = new CalendarTaskList();
-        $this->calendarTaskList->setId($id);
+        $this->todoTaskList = new TodoTaskList($id);
+        $this->unplannedTaskList = new UnplannedTaskList($id);
+        $this->calendarTaskList = new CalendarTaskList($id);
     }
 
     public function getId(): string
@@ -75,5 +72,25 @@ final class ActivityInventory implements ActivityInventoryInterface
             'unplannedTaskList' => $this->getUnplannedTaskList()->toArray(),
             'calendarTaskList' => $this->getCalendarTaskList()->toArray(),
         ];
+    }
+
+    public function getWorkerId(): string
+    {
+        return $this->workerId;
+    }
+
+    public function setTodoTaskList(TodoTaskList $todoTaskList): void
+    {
+        $this->todoTaskList = $todoTaskList;
+    }
+
+    public function setUnplannedTaskList(UnplannedTaskList $unplannedTaskList): void
+    {
+        $this->unplannedTaskList = $unplannedTaskList;
+    }
+
+    public function setCalendarTaskList(CalendarTaskList $calendarTaskList): void
+    {
+        $this->calendarTaskList = $calendarTaskList;
     }
 }

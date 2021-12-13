@@ -24,33 +24,14 @@ final class UpdateParameters
 
     public function execute(UpdateParametersRequest $request, UpdateParametersPresenter $presenter): UpdateParametersPresenter
     {
-        $worker = $this->workerRepository->get($request->workerId);
         $response = new UpdateParametersResponse();
-        $response->workerId = $worker->getId();
-
-        $parameters = $worker->getParameters();
-
-        $pomodoroDuration = $parameters->getPomodoroDuration() !== $request->pomodoroDuration
-                ? $request->pomodoroDuration
-                : $parameters->getPomodoroDuration();
-
-        $longBreakDuration = $parameters->getLongBreakDuration() !== $request->longBreakDuration
-            ? $request->longBreakDuration
-            : $parameters->getLongBreakDuration();
-
-        $shortBreakDuration = $parameters->getShortBreakDuration() !== $request->shortBreakDuration
-            ? $request->shortBreakDuration
-            : $parameters->getShortBreakDuration();
-
-        $startFirstTaskIn = $parameters->getStartFirstTaskIn() !== $request->startFirstTaskIn
-            ? $request->startFirstTaskIn
-            : $parameters->getStartFirstTaskIn();
+        $response->workerId = $request->workerId;
 
         $cycleParameters = new CycleParameters(
-            $pomodoroDuration,
-            $shortBreakDuration,
-            $longBreakDuration,
-            $startFirstTaskIn
+            $request->pomodoroDuration,
+            $request->shortBreakDuration,
+            $request->longBreakDuration,
+            $request->startFirstTaskIn
         );
 
         $result = $this->cycleParametersValidator->validate($cycleParameters);
@@ -61,8 +42,7 @@ final class UpdateParameters
             return $presenter;
         }
 
-        $worker->setParameters($cycleParameters);
-        $this->workerRepository->updateCycleParametersForWorker($worker);
+        $this->workerRepository->updateCycleParametersForWorker($request->workerId, $cycleParameters);
 
         $response->parameters[] = $cycleParameters;
 

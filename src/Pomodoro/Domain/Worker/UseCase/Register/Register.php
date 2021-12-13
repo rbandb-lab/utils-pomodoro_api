@@ -71,7 +71,6 @@ final class Register
             $request->startFirstTaskAfter,
         );
 
-
         $validator = new CycleParametersValidator();
         $result = $validator->validate($cycleParameters);
 
@@ -134,7 +133,7 @@ final class Register
         $worker->addRegistrationToken($token);
 
         try {
-            $this->workerRepository->save($worker);
+            $this->workerRepository->create($worker);
             $response->workerId = $request->id;
             $response->events[] = new RegistrationSubmitted(
                 $worker->getId(),

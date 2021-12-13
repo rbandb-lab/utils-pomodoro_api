@@ -12,7 +12,7 @@ final class HttpRequestValidator
     private array $acceptedLocales;
     private array $acceptedContentTypes;
     private string $contentType;
-    private string $locale;
+    private ?string $locale = null;
 
     public function __construct(array $acceptedLocales, array $acceptedContentTypes)
     {
@@ -53,13 +53,11 @@ final class HttpRequestValidator
 
     public function requestParams(Request $request): array
     {
-        if (isset($request->headers)) {
-            $headers = $request->headers->getIterator()->getArrayCopy();
-        }
-
+        $headerBag = $request->headers;
+        $headers = $headerBag->getIterator()->getArrayCopy();
         $headers = array_change_key_case($headers, CASE_LOWER);
 
-        $contentType = !empty($headers['content-type'][0]) ? $headers['content-type'][0] : "application/json";
+        $contentType = $headers['content-type'][0] ?? "application/json";
         $locale = $request->getLocale();
         $uri = $request->getRequestUri();
 

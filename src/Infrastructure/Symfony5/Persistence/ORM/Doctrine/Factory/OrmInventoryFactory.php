@@ -9,6 +9,24 @@ use Symfony5\Persistence\ORM\Doctrine\Entity\ActivityInventory as OrmInventory;
 
 final class OrmInventoryFactory
 {
+    public static function fromOrm(OrmInventory $ormInventory): ActivityInventory
+    {
+        $todoTaskList = OrmTodoTaskListFactory::fromOrm($ormInventory->getTodoTaskList());
+        $calendarTaskList = OrmCalendarTaskListFactory::fromOrm($ormInventory->getCalendarTaskList());
+        $unplannedTaskList = OrmUnplannedTaskListFactory::fromOrm($ormInventory->getUnplannedTaskList());
+
+        $inventory = new ActivityInventory(
+            $ormInventory->getId(),
+            $ormInventory->getWorkerId(),
+        );
+
+        $inventory->setTodoTaskList($todoTaskList);
+        $inventory->setCalendarTaskList($calendarTaskList);
+        $inventory->setUnplannedTaskList($unplannedTaskList);
+
+        return  $inventory;
+    }
+
     public static function toOrm(ActivityInventory $activityInventory): OrmInventory
     {
         $ormInventory = new OrmInventory(

@@ -41,7 +41,7 @@ class RegisterTest extends KernelTestCase implements RegisterPresenter
             $hasher
         );
         $this->tokenFactory = new RegistrationTokenFactory($this->idGenerator, new RandomStringGenerator());
-        $this->workerFactory = new WorkerFactory($this->passwordHasher);
+        $this->workerFactory = new WorkerFactory($this->idGenerator, $this->passwordHasher);
         $this->workerRepository = new InMemoryWorkerRepository();
         $this->emailValidator = new \Symfony5\Validator\EmailValidator();
         $this->eventBus = $container->get('event.bus');
@@ -63,7 +63,7 @@ class RegisterTest extends KernelTestCase implements RegisterPresenter
     public function present(RegisterResponse $response): void
     {
         $this->response = $response;
-        if (empty($response->errors)) {
+        if (count($response->errors) === 0) {
             foreach ($response->events as $event) {
                 try {
                     $this->eventBus->dispatch($event);

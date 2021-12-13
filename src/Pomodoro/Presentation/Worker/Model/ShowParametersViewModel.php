@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pomodoro\Presentation\Worker\Model;
 
-class ShowParametersViewModel
+final class ShowParametersViewModel
 {
     public ?string $id = null;
     public array $errors = [];

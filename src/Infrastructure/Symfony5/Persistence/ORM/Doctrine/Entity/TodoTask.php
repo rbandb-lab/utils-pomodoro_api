@@ -26,4 +26,37 @@ final class TodoTask extends Task
      * )
      */
     private TodoTaskListInterface $taskList;
+
+    public function __construct(string $id, string $categoryId, string $name, ?string $state)
+    {
+        $this->id = $id;
+        $this->categoryId = $categoryId;
+        $this->name = $name;
+        $this->state = $state;
+    }
+
+    public function getCategoryId(): string
+    {
+        return $this->categoryId;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setTaskList(TodoTaskListInterface $taskList): void
+    {
+        $this->taskList = $taskList;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
+    }
 }

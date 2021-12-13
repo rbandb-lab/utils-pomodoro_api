@@ -28,7 +28,6 @@ use function PHPUnit\Framework\assertNotEmpty;
 
 final class RegistrationContext implements Context, RegisterPresenter, ValidateEmailPresenter
 {
-    private AuthContext $authContext;
     private EmailValidator $emailValidator;
     private HttpClientInterface $httpClient;
     private IdGenerator $idGenerator;
@@ -73,20 +72,13 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
         $this->httpClient->request('DELETE', $this->mailhogClean);
     }
 
-    /** @BeforeScenario */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $environment = $scope->getEnvironment();
-        $this->authContext = $environment->getContext('PomodoroTests\Acceptance\Behat\AuthContext');
-    }
-
     /**
      * @Given no users exists
      */
     public function noUsersExists()
     {
         $results = $this->workerRepository->getAll();
-        if (!empty($results)) {
+        if (count($results)>0) {
             foreach ($results as $worker) {
                 $this->workerRepository->remove($worker);
             }
@@ -128,7 +120,7 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
 
     public function present($response): void
     {
-        if (empty($response->errors)) {
+        if (count($response->errors) === 0) {
             foreach ($response->events as $event) {
                 try {
                     $this->eventBus->dispatch($event);

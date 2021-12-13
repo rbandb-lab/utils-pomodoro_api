@@ -10,7 +10,19 @@ use Pomodoro\Domain\Tracking\Entity\Interruption;
 
 final class TodoTaskList extends AbstractTaskList implements TodoTaskListInterface
 {
+    public string $id;
+
     private ?TodoTaskInterface $currentTask = null;
+
+    public function __construct(string $id)
+    {
+        $this->id = $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
 
     public function recordInterruption(Interruption $interruption): void
     {
@@ -28,5 +40,15 @@ final class TodoTaskList extends AbstractTaskList implements TodoTaskListInterfa
     {
         $todoTask->start();
         $this->currentTask = $todoTask;
+    }
+
+    public function setTasks(array $tasks): void
+    {
+        $this->tasks = $tasks;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
     }
 }

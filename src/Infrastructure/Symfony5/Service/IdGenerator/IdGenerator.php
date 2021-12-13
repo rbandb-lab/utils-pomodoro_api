@@ -18,4 +18,14 @@ class IdGenerator implements IdGeneratorInterface
     {
         return Uuid::v4()->toRfc4122();
     }
+
+    public function createArrayOfIds(int $count): array
+    {
+        $result = ['', '', ''];
+        for ($i = 0; $i < $count; $i++) {
+            $result[$i] = Uuid::v4()->toRfc4122();
+        }
+
+        return $result;
+    }
 }

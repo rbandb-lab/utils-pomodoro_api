@@ -274,7 +274,7 @@ final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterfa
         return $this->startFirstTaskIn;
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
@@ -285,5 +285,10 @@ final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterfa
         $this->setShortBreakDuration($cycleParameters->getShortBreakDuration());
         $this->setLongBreakDuration($cycleParameters->getLongBreakDuration());
         $this->setStartFirstTaskIn($cycleParameters->getStartFirstTaskIn());
+    }
+
+    public function getActivityInventory(): ActivityInventory
+    {
+        return $this->activityInventory;
     }
 }

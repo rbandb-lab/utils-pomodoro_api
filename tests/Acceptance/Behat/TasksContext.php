@@ -22,6 +22,7 @@ use Pomodoro\Domain\Tracking\UseCase\StartTimer\StartTimerResponse;
 use Pomodoro\Domain\Tracking\UseCase\StopTimer\StopTimer;
 use Pomodoro\Domain\Tracking\UseCase\StopTimer\StopTimerPresenter;
 use Pomodoro\Domain\Tracking\UseCase\StopTimer\StopTimerRequest;
+use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Symfony5\Service\IdGenerator\IdGenerator;
 use function PHPUnit\Framework\assertClassHasAttribute;
@@ -34,13 +35,16 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
     private $response;
     private IdGenerator $idGenerator;
     private ?int $startTs = null;
+    private ActivityInventoryRepository $activityInventoryRepository;
 
     public function __construct(
         IdGenerator $idGenerator,
-        WorkerRepository $workerRepository
+        WorkerRepository $workerRepository,
+        ActivityInventoryRepository $activityInventoryRepository,
     ) {
         $this->idGenerator = $idGenerator;
         $this->workerRepository = $workerRepository;
+        $this->activityInventoryRepository = $activityInventoryRepository;
     }
 
     /** @BeforeScenario */
@@ -65,7 +69,7 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
             );
             $useCase = new AddTodoTask(
                 $this->idGenerator,
-                $this->workerRepository
+                $this->activityInventoryRepository
             );
             $useCase->execute($request, $this);
         }
@@ -86,7 +90,7 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
             );
             $useCase = new AddTodoTask(
                 $this->idGenerator,
-                $this->workerRepository
+                $this->activityInventoryRepository
             );
             $useCase->execute($request, $this);
         }
@@ -210,5 +214,10 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
     public function present($response): void
     {
         $this->response = $response;
+    }
+
+    public function viewModel()
+    {
+        // TODO: Implement viewModel() method.
     }
 }
