@@ -13,7 +13,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
- * @method string getUserIdentifier()
  */
 final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -273,6 +272,11 @@ final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterfa
     public function getStartFirstTaskIn(): int
     {
         return $this->startFirstTaskIn;
+    }
+
+    public function getUserIdentifier()
+    {
+        return $this->username;
     }
 
     public function setParameters(CycleParameters $cycleParameters)
