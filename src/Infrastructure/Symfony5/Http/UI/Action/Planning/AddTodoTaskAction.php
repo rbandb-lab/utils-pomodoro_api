@@ -6,11 +6,10 @@ namespace Symfony5\Http\UI\Action\Planning;
 
 use Pomodoro\Presentation\Worker\TodoTask\AddTodoTaskPresenter;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony5\App\CommandHandler\addTodoTaskHandler;
+use Symfony5\App\CommandHandler\AddTodoTaskHandler;
 use Symfony5\Http\UI\Responder\AddTodoTaskResponder;
 use Symfony5\Http\UI\Validation\Form\AddTodoTaskType;
 use Symfony5\Http\UI\Validation\HttpRequestValidator;

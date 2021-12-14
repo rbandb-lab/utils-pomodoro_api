@@ -143,8 +143,7 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
                 $arg1,
             );
             $useCase = new AddUnplannedTask(
-                $this->idGenerator,
-                $this->workerRepository
+                $this->activityInventoryRepository
             );
             $useCase->execute($request, $this);
         }
@@ -191,8 +190,7 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
             new \DateTime($arg2)
         );
         $useCase = new AddUnplannedTask(
-            $this->idGenerator,
-            $this->workerRepository
+            $this->activityInventoryRepository
         );
         $useCase->execute($request, $this);
     }

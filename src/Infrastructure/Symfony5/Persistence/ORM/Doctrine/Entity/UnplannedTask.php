@@ -26,4 +26,24 @@ final class UnplannedTask extends Task
      * )
      */
     private UnplannedTaskListInterface $taskList;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $urgent;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private ?\DateTimeImmutable $deadline;
+
+
+    public function __construct(string $id, string $name, string $categoryId, string $state, ?\DateTimeImmutable $deadline = null)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->categoryId = $categoryId;
+        $this->state = $state;
+        $this->deadline = $deadline;
+    }
 }

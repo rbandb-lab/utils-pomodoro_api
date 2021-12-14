@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Symfony5\App\CommandHandler;
 
-use Pomodoro\Domain\Planning\UseCase\AddTodoTask\AddTodoTask;
-use Pomodoro\Domain\Planning\UseCase\AddTodoTask\AddTodoTaskPresenter;
-use Pomodoro\Domain\Planning\UseCase\AddTodoTask\AddTodoTaskRequest;
+use Pomodoro\Domain\Planning\UseCase\AddUnplannedTask\AddUnplannedTask;
+use Pomodoro\Domain\Planning\UseCase\AddUnplannedTask\AddUnplannedTaskPresenter;
+use Pomodoro\Domain\Planning\UseCase\AddUnplannedTask\AddUnplannedTaskRequest;
 use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
-use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Pomodoro\SharedKernel\Service\IdGenerator;
-use Symfony5\Http\UI\Validation\Dto\AddTodoTaskDto;
+use Symfony5\Http\UI\Validation\Dto\AddUnplannedTaskDto;
 
-class addTodoTaskHandler
+final class AddUnplannedTaskHandler
 {
     private IdGenerator $idGenerator;
     private ActivityInventoryRepository $activityInventoryRepository;
@@ -23,22 +22,17 @@ class addTodoTaskHandler
         $this->activityInventoryRepository = $activityInventoryRepository;
     }
 
-    public function handle(AddTodoTaskDto $dto, AddTodoTaskPresenter $presenter): AddTodoTaskPresenter
+    public function handle(AddUnplannedTaskDto $dto, AddUnplannedTaskPresenter $presenter): AddUnplannedTaskPresenter
     {
-        $request = new AddTodoTaskRequest();
+        $request = new AddUnplannedTaskRequest();
         $request->withWorkerId(
             $this->idGenerator->createId(),
             $dto->workerId,
-            $dto->taskName
+            $dto->taskName,
+            $dto->deadline
         );
-
-        $addTodoTask = new AddTodoTask(
-            $this->idGenerator,
-            $this->activityInventoryRepository
-        );
-
-        $addTodoTask->execute($request, $presenter);
-
+        $addUnplannedTask = new AddUnplannedTask($this->activityInventoryRepository);
+        $addUnplannedTask->execute($request, $presenter);
         return $presenter;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PomodoroTests\_Mock\Worker\Entity;
 
 use Pomodoro\Domain\Planning\Entity\TodoTask;
+use Pomodoro\Domain\Planning\Entity\UnplannedTask;
 use Pomodoro\Domain\Worker\Entity\ActivityInventory;
 use Pomodoro\Domain\Worker\Entity\ActivityInventoryInterface;
 use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
@@ -60,5 +61,12 @@ class InMemoryActivityInventoryRepository implements ActivityInventoryRepository
         $inventory = $this->getByWorkerId($workerId);
         $todoTaskList = $inventory->getTodoTaskList();
         $todoTaskList->addTask($task);
+    }
+
+    public function addUnplannedTaskToWorker(string $workerId, UnplannedTask $task): void
+    {
+        $inventory = $this->getByWorkerId($workerId);
+        $unplannedList = $inventory->getUnplannedTaskList();
+        $unplannedList->addTask($task);
     }
 }
