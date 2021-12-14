@@ -93,7 +93,7 @@ final class ActivityInventoryContext implements Context, ShowActivityInventoryPr
         $tasks = $inventory['unplannedTaskList']['tasks'];
         $firstTask = array_shift($tasks);
         $element = $firstTask->getDeadline();
-        assertEquals($arg2, $element);
+        assertEquals($arg2, $element->getTimestamp());
     }
 
     /**
@@ -206,7 +206,7 @@ final class ActivityInventoryContext implements Context, ShowActivityInventoryPr
         $urgent = $arg4 === 'urgent';
 
         $request->taskId = $arg2;
-        $request->deadline = new \DateTimeImmutable($arg5);
+        $request->deadline = new \DateTime($arg5);
         $request->withWorkerIdAsUnplanned(
             $worker->getId(),
             $urgent,
@@ -271,7 +271,7 @@ final class ActivityInventoryContext implements Context, ShowActivityInventoryPr
         assertInstanceOf(UnplannedTask::class, $unplannedTask);
         assertEquals($arg1, $unplannedTask->getName());
         assertTrue($unplannedTask->isUrgent());
-        assertEquals((int) $arg2, $unplannedTask->getDeadline());
+        assertEquals((int) $arg2, $unplannedTask->getDeadline()?->getTimestamp());
     }
 
 

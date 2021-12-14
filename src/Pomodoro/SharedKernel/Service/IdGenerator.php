@@ -7,4 +7,6 @@ namespace Pomodoro\SharedKernel\Service;
 interface IdGenerator
 {
     public function createId(): string;
+
+    public function createArrayOfIds(int $count): array;
 }

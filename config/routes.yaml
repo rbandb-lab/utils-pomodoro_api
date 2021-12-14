@@ -45,7 +45,6 @@ add_unplanned_task:
   controller: Symfony5\Http\UI\Action\Planning\AddUnplannedTaskAction
   methods: ['POST']
 
-
 #TRACKING
 timer_start:
   path: /api/timer/{taskId}

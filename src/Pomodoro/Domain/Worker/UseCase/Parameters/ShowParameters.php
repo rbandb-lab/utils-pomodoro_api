@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\UseCase\Parameters;
 
-use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
+use Pomodoro\Domain\Worker\Model\CycleParameters;
 use Pomodoro\SharedKernel\Error\Error;
 
 final class ShowParameters
@@ -20,23 +20,18 @@ final class ShowParameters
     public function execute(ShowParametersRequest $request, ShowParametersPresenter $presenter)
     {
         $response = new ShowParametersResponse();
-        $worker = $this->getWorker($request, $response);
-        $isValid = $worker instanceof Worker;
-
-        if ($isValid) {
-            $response->parameters = $worker->getParameters()->toArray();
-        }
-
+        $parameters = $this->getWorkerParameters($request, $response);
+        $response->parameters = $parameters->toArray();
         $presenter->present($response);
     }
 
-    private function getWorker(ShowParametersRequest $request, $response): ?Worker
+    private function getWorkerParameters(ShowParametersRequest $request, $response): ?CycleParameters
     {
-        $worker = $this->workerRepository->get($request->workerId);
-        if (!$worker instanceof Worker) {
+        $parameters = $this->workerRepository->getWorkerCycleParameters($request->workerId);
+        if (!$parameters instanceof CycleParameters) {
             $response->errors[] = new Error('id', 'worker not found');
         }
 
-        return $worker;
+        return $parameters;
     }
 }

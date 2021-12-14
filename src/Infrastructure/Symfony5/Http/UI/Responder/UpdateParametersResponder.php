@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony5\Http\UI\Responder;
 
-class UpdateParametersResponder extends ApiResponder
+final class UpdateParametersResponder extends ApiResponder
 {
     public function viewModelData($viewModel): array
     {

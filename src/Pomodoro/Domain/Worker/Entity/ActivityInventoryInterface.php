@@ -25,4 +25,6 @@ interface ActivityInventoryInterface
     public function getCalendarTaskList(): CalendarTaskList;
 
     public function toArray(): array;
+
+    public function getId(): string;
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PomodoroTests\_Mock\Worker\Entity;
 
 use Pomodoro\Domain\Worker\Entity\AbstractToken;
-use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use function PHPUnit\Framework\assertInstanceOf;
@@ -14,24 +13,10 @@ class InMemoryWorkerRepository implements WorkerRepository
 {
     private array $workers = [];
 
-    private ActivityInventoryRepository $inventoryRepository;
-
-    public function __construct()
-    {
-        $this->inventoryRepository = new InMemoryActivityInventoryRepository();
-    }
-
-    public function getInventoryRepository(): InMemoryActivityInventoryRepository|ActivityInventoryRepository
-    {
-        return $this->inventoryRepository;
-    }
-
     public function save(Worker $worker): void
     {
         if (!in_array($worker->getId(), $this->workers, true)) {
             $this->workers[$worker->getId()] = $worker;
-            $inventory = $worker->getActivityInventory();
-            $this->inventoryRepository->save($inventory);
         }
         assertInstanceOf(Worker::class, $this->workers[$worker->getId()]);
     }
@@ -42,7 +27,7 @@ class InMemoryWorkerRepository implements WorkerRepository
             return $worker->getUsername() === trim($username);
         });
 
-        return empty($result) ? null : array_shift($result);
+        return count($result) === 0 ? null : array_shift($result);
     }
 
     public function getAll(): array
@@ -62,7 +47,7 @@ class InMemoryWorkerRepository implements WorkerRepository
 
     public function add(Worker $worker): void
     {
-        if (!in_array($worker->getId(), $this->workers)) {
+        if (!in_array($worker->getId(), $this->workers, true)) {
             $this->workers[$worker->getId()] = $worker;
         }
         assertInstanceOf(Worker::class, $this->workers[$worker->getId()]);
@@ -77,7 +62,7 @@ class InMemoryWorkerRepository implements WorkerRepository
                 return $token->getToken() === $value;
             });
 
-            if (!empty($found)) {
+            if (count($found) > 0) {
                 return $worker;
             }
         }
@@ -85,8 +70,38 @@ class InMemoryWorkerRepository implements WorkerRepository
         return null;
     }
 
-    public function updateCycleParametersForWorker(Worker $worker)
+    public function updateCycleParametersForWorker(string $workerId, CycleParameters $cycleParameters)
+    {
+        $worker = $this->workers[$workerId];
+        $worker->setPomodoroDuration($cycleParameters->getPomodoroDuration());
+        $worker->setShortBreakDuration($cycleParameters->getShortBreakDuration());
+        $worker->setLongBreakDuration($cycleParameters->getLongBreakDuration());
+        $worker->setStartFirstTaskIn($cycleParameters->getStartFirstTaskIn());
+
+        $this->workers[$worker->getId()] = $worker;
+    }
+
+    public function create(Worker $worker): void
     {
         $this->workers[$worker->getId()] = $worker;
+    }
+
+    public function getWorkerCycleParameters(string $workerId): ?CycleParameters
+    {
+        $worker = $this->workers[$workerId];
+        return $worker->getParameters();
+    }
+
+    public function updateWorkerEmailState(Worker $worker)
+    {
+        // TODO: Implement updateWorkerEmailState() method.
+    }
+
+    /**
+     * @return array
+     */
+    public function getWorkers(): array
+    {
+        return $this->workers;
     }
 }

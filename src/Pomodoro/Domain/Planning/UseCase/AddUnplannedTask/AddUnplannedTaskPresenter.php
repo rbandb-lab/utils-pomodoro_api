@@ -2,7 +2,9 @@
 
 namespace Pomodoro\Domain\Planning\UseCase\AddUnplannedTask;
 
-interface AddUnplannedTaskPresenter
+use Pomodoro\Presentation\PresenterInterface;
+
+interface AddUnplannedTaskPresenter extends PresenterInterface
 {
     public function present(AddUnplannedTaskResponse $response): void;
 }

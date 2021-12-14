@@ -2,7 +2,9 @@
 
 namespace Pomodoro\Domain\Worker\UseCase\Parameters;
 
-interface UpdateParametersPresenter
+use Pomodoro\Presentation\PresenterInterface;
+
+interface UpdateParametersPresenter extends PresenterInterface
 {
     public function present(UpdateParametersResponse $response): void;
 }

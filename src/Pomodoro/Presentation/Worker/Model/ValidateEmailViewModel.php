@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Pomodoro\Presentation\Worker\Model;
 
-class ValidateEmailViewModel
+final class ValidateEmailViewModel
 {
+    public ?string $id = null;
     public array $errors = [];
-    public bool $emailValid = false;
+    public bool $emailValidated = false;
 }

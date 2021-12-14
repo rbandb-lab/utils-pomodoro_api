@@ -9,6 +9,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
+use Pomodoro\Domain\Worker\Model\CycleParametersValidator;
 use Pomodoro\Domain\Worker\UseCase\Parameters\ShowParameters;
 use Pomodoro\Domain\Worker\UseCase\Parameters\ShowParametersPresenter;
 use Pomodoro\Domain\Worker\UseCase\Parameters\ShowParametersRequest;
@@ -34,13 +35,16 @@ final class WorkerContext implements Context, ShowParametersPresenter, ShowProfi
     private WorkerRepository $workerRepository;
     private array $workerParameters = [];
     private $response;
+    private CycleParametersValidator $cycleValidator;
 
     public function __construct(
         IdGenerator $idGenerator,
-        WorkerRepository $workerRepository
+        WorkerRepository $workerRepository,
+        CycleParametersValidator $cycleValidator
     ) {
         $this->idGenerator = $idGenerator;
         $this->workerRepository = $workerRepository;
+        $this->cycleValidator = $cycleValidator;
     }
 
     /** @BeforeScenario */
@@ -192,7 +196,10 @@ final class WorkerContext implements Context, ShowParametersPresenter, ShowProfi
         ];
         $request = new UpdateParametersRequest();
         $request->withCycleParameters($workerId, $parameters);
-        $useCase = new UpdateParameters($this->workerRepository);
+        $useCase = new UpdateParameters(
+            $this->cycleValidator,
+            $this->workerRepository
+        );
         $useCase->execute($request, $this);
     }
 
@@ -206,5 +213,10 @@ final class WorkerContext implements Context, ShowParametersPresenter, ShowProfi
     public function present($response): void
     {
         $this->response = $response;
+    }
+
+    public function viewModel()
+    {
+        // TODO: Implement viewModel() method.
     }
 }

@@ -6,10 +6,9 @@ namespace Pomodoro\Presentation\Worker\Parameters;
 
 use Pomodoro\Domain\Worker\UseCase\Parameters\ShowParametersPresenter as ShowParametersPresenterInterface;
 use Pomodoro\Domain\Worker\UseCase\Parameters\ShowParametersResponse;
-use Pomodoro\Presentation\PresenterInterface;
 use Pomodoro\Presentation\Worker\Model\ShowParametersViewModel;
 
-class ShowParametersPresenter implements PresenterInterface, ShowParametersPresenterInterface
+class ShowParametersPresenter implements ShowParametersPresenterInterface
 {
     private ShowParametersViewModel $viewModel;
 

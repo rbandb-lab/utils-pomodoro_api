@@ -7,4 +7,5 @@ namespace Pomodoro\Domain\Planning\UseCase\AddTodoTask;
 class AddTodoTaskResponse
 {
     public ?string $id = '';
+    public array $errors = [];
 }

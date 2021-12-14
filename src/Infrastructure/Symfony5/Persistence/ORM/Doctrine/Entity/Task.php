@@ -14,15 +14,15 @@ abstract class Task
     /**
      * @ORM\Column()
      */
-    protected string $categoryId;
-
-    /**
-     * @ORM\Column()
-     */
     protected string $name;
 
     /**
      * @ORM\Column()
      */
-    protected string $state;
+    protected ?string $categoryId;
+
+    /**
+     * @ORM\Column()
+     */
+    protected ?string $state;
 }

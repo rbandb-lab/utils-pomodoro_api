@@ -286,4 +286,9 @@ final class OrmWorker implements UserInterface, PasswordAuthenticatedUserInterfa
         $this->setLongBreakDuration($cycleParameters->getLongBreakDuration());
         $this->setStartFirstTaskIn($cycleParameters->getStartFirstTaskIn());
     }
+
+    public function getActivityInventory(): ActivityInventory
+    {
+        return $this->activityInventory;
+    }
 }

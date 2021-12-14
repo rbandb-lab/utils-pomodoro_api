@@ -102,4 +102,9 @@ final class Worker
     {
         $this->parameters = $parameters;
     }
+
+    public function setActivityInventory(ActivityInventoryInterface $activityInventory): void
+    {
+        $this->activityInventory = $activityInventory;
+    }
 }

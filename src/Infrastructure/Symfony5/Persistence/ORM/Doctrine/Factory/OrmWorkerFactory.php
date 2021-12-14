@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony5\Persistence\ORM\Doctrine\Factory;
 
 use Pomodoro\Domain\Worker\Entity\Worker;
+use Symfony5\Persistence\ORM\Doctrine\Entity\ActivityInventory as OrmInventory;
 use Symfony5\Persistence\ORM\Doctrine\Entity\OrmWorker;
 
 final class OrmWorkerFactory
@@ -13,7 +14,7 @@ final class OrmWorkerFactory
     {
         $cycleParameters = $ormWorker->getCycleParameters();
 
-        return new Worker(
+        $worker = new Worker(
             $ormWorker->getId(),
             $ormWorker->getUsername(),
             $ormWorker->getFirstName(),
@@ -23,6 +24,15 @@ final class OrmWorkerFactory
             $cycleParameters->getLongBreakDuration(),
             $cycleParameters->getStartFirstTaskIn(),
         );
+
+        $ormActivityInventory = $ormWorker->getActivityInventory();
+
+        if ($ormActivityInventory instanceof OrmInventory) {
+            $activityInventory = OrmInventoryFactory::fromOrm($ormActivityInventory);
+            $worker->setActivityInventory($activityInventory);
+        };
+
+        return $worker;
     }
 
     public static function toOrm(Worker $worker): OrmWorker
@@ -35,6 +45,7 @@ final class OrmWorkerFactory
 
         $inventory = $worker->getActivityInventory();
         $ormInventory = OrmInventoryFactory::toOrm($inventory);
+
         $ormWorker->setPassword($worker->getPassword());
         $ormWorker->setEmailValidated($worker->isEmailValidated());
         $ormWorker->setPomodoroDuration($worker->getParameters()->getPomodoroDuration());
@@ -56,7 +67,7 @@ final class OrmWorkerFactory
     public static function fromRequestArray(array $data): Worker
     {
         return new Worker(
-            $data['id'],
+            $data['worker_id'],
             $data['username'],
             $data['first_name'],
             $data['password'],

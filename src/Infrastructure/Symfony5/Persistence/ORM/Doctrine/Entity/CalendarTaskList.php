@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Symfony5\Persistence\ORM\Doctrine\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity()
  */
-final class CalendarTaskList
+class CalendarTaskList
 {
     /**
      * @ORM\Id
@@ -23,7 +24,8 @@ final class CalendarTaskList
     /**
      * @ORM\OneToMany(
      *     targetEntity="Symfony5\Persistence\ORM\Doctrine\Entity\CalendarTask",
-     *     mappedBy="taskList"
+     *     mappedBy="taskList",
+     *     cascade={"all"}
      * )
      * @ORM\JoinColumn(name="calendar_task_id", referencedColumnName="id")
      */
@@ -40,10 +42,25 @@ final class CalendarTaskList
     private ActivityInventory $activityInventory;
 
 
-    public function __construct(string $id, Collection $tasks, ActivityInventory $activityInventory)
+    public function __construct(string $id, ActivityInventory $activityInventory)
     {
         $this->id = $id;
-        $this->tasks = $tasks;
         $this->activityInventory = $activityInventory;
+        $this->tasks = new ArrayCollection();
+    }
+
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function getTasksArray(): array
+    {
+        return $this->tasks->toArray();
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 }

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\Factory;
 
-use Pomodoro\Domain\Worker\Model\CycleParameters;
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\UseCase\Register\RegisterRequest;
+use Pomodoro\SharedKernel\Service\IdGenerator;
 use Pomodoro\SharedKernel\Service\PasswordHasher;
-use Symfony5\Persistence\ORM\Doctrine\Entity\OrmWorker;
 
 final class WorkerFactory
 {
+    private IdGenerator $idGenerator;
     private PasswordHasher $passwordHasher;
 
-    public function __construct(PasswordHasher $passwordHasher)
+    public function __construct(IdGenerator $idGenerator, PasswordHasher $passwordHasher)
     {
+        $this->idGenerator = $idGenerator;
         $this->passwordHasher = $passwordHasher;
     }
 
@@ -40,7 +41,15 @@ final class WorkerFactory
 
     public function instanciateInventory(string $id, Worker $worker): Worker
     {
-        $inventory = ActivityInventoryFactory::create($id, $worker->getId());
+        $ids = $this->idGenerator->createArrayOfIds(3);
+
+        $inventory = ActivityInventoryFactory::create(
+            $id,
+            $worker->getId(),
+            $ids[0],
+            $ids[1],
+            $ids[2]
+        );
         $worker->attachInventory($inventory);
 
         return $worker;
