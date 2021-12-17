@@ -52,8 +52,8 @@ class UnplannedTaskList
         return $this->id;
     }
 
-    public function getTasksArray(): array
+    public function getTasks(): Collection
     {
-        return $this->tasks->toArray();
+        return $this->tasks;
     }
 }

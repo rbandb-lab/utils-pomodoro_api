@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211214161758 extends AbstractMigration
+final class Version20211219112603 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,13 +29,16 @@ final class Version20211214161758 extends AbstractMigration
         $this->addSql('CREATE TABLE calendar_task_list (id VARCHAR(36) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE orm_worker (id VARCHAR(36) NOT NULL, activity_inventory_id VARCHAR(36) DEFAULT NULL, username VARCHAR(120) NOT NULL, first_name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, pomodoro_duration INT NOT NULL, short_break_duration INT NOT NULL, long_break_duration INT NOT NULL, start_first_task_in INT NOT NULL, email_validated BOOLEAN NOT NULL, roles JSON NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AD30EE2D566518 ON orm_worker (activity_inventory_id)');
-        $this->addSql('CREATE TABLE todo_task (id VARCHAR(36) NOT NULL, task_list_id VARCHAR(36) DEFAULT NULL, name VARCHAR(255) NOT NULL, category_id VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE todo_task (id VARCHAR(36) NOT NULL, task_list_id VARCHAR(36) DEFAULT NULL, start_task TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, name VARCHAR(255) NOT NULL, category_id VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, timer_started_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, timer_rings_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_DAFBD3A224F3C61 ON todo_task (task_list_id)');
+        $this->addSql('COMMENT ON COLUMN todo_task.start_task IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN todo_task.timer_started_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN todo_task.timer_rings_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE todo_task_list (id VARCHAR(36) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE token (id VARCHAR(36) NOT NULL, worker_id VARCHAR(36) DEFAULT NULL, token_string VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_5F37A13B6B20BA36 ON token (worker_id)');
         $this->addSql('COMMENT ON COLUMN token.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE unplanned_task (id VARCHAR(36) NOT NULL, task_list_id VARCHAR(36) DEFAULT NULL, urgent BOOLEAN NOT NULL, deadline TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, name VARCHAR(255) NOT NULL, category_id VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE unplanned_task (id VARCHAR(36) NOT NULL, task_list_id VARCHAR(36) DEFAULT NULL, urgent BOOLEAN NOT NULL, deadline TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, name VARCHAR(255) NOT NULL, category_id VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D99102D6224F3C61 ON unplanned_task (task_list_id)');
         $this->addSql('COMMENT ON COLUMN unplanned_task.deadline IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE unplanned_task_list (id VARCHAR(36) NOT NULL, PRIMARY KEY(id))');

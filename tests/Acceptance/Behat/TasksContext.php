@@ -38,8 +38,8 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
     private ActivityInventoryRepository $activityInventoryRepository;
 
     public function __construct(
-        IdGenerator $idGenerator,
-        WorkerRepository $workerRepository,
+        IdGenerator                 $idGenerator,
+        WorkerRepository            $workerRepository,
         ActivityInventoryRepository $activityInventoryRepository,
     ) {
         $this->idGenerator = $idGenerator;
@@ -104,7 +104,7 @@ final class TasksContext implements Context, AddCalendarTaskPresenter, AddTodoTa
         $worker = $this->authContext->getAuthenticatedWorker();
         $request = new StartTimerRequest();
         $request->withTaskId($worker->getId(), $arg1);
-        $useCase = new StartTimer($this->workerRepository);
+        $useCase = new StartTimer($this->activityInventoryRepository, $this->workerRepository);
         $useCase->execute($request, $this);
         $this->startTs = $this->response->startedAt;
     }

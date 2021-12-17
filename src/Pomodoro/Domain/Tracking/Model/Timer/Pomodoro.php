@@ -7,7 +7,7 @@ namespace Pomodoro\Domain\Tracking\Model\Timer;
 final class Pomodoro
 {
     private int $startTs;
-    private int $endTs;
+    private ?int $endTs = null;
 
     public function __construct(\DateTime $startDt)
     {
@@ -19,7 +19,7 @@ final class Pomodoro
         return $this->startTs;
     }
 
-    public function getEndTs(): int
+    public function getEndTs(): ?int
     {
         return $this->endTs;
     }

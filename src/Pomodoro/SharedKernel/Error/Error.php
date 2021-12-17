@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pomodoro\SharedKernel\Error;
 
-class Error
+final class Error
 {
     private string $fieldName;
     private string $message;
@@ -17,7 +17,7 @@ class Error
 
     public function __toString()
     {
-        return $this->fieldName.':'.$this->message;
+        return $this->fieldName . ':' . $this->message;
     }
 
     public function fieldName(): string

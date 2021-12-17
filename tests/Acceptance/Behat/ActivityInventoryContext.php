@@ -280,4 +280,9 @@ final class ActivityInventoryContext implements Context, ShowActivityInventoryPr
     {
         $this->response = $response;
     }
+
+    public function viewModel()
+    {
+        // TODO: Implement viewModel() method.
+    }
 }

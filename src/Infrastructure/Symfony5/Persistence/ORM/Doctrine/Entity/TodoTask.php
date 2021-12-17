@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Symfony5\Persistence\ORM\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Pomodoro\Domain\Planning\Model\TodoTaskListInterface;
 
 /**
  * @ORM\Entity
@@ -25,7 +24,17 @@ final class TodoTask extends Task
      *     inversedBy="tasks"
      * )
      */
-    private TodoTaskListInterface $taskList;
+    private TodoTaskList $taskList;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private ?\DateTimeImmutable $startTask;
+
+
+    /** @ORM\Embedded(class="Pomodoro") */
+    private Pomodoro $timer;
+
 
     public function __construct(string $id, string $categoryId, string $name, ?string $state)
     {
@@ -33,6 +42,33 @@ final class TodoTask extends Task
         $this->categoryId = $categoryId;
         $this->name = $name;
         $this->state = $state;
+        $this->timer = new Pomodoro();
+    }
+
+    public function getStartTask(): ?\DateTimeImmutable
+    {
+        return $this->startTask;
+    }
+
+    public function setStartTask(\DateTimeImmutable $startTask): void
+    {
+        $this->startTask = $startTask;
+    }
+
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getTaskList(): TodoTaskList
+    {
+        return $this->taskList;
+    }
+
+    public function setTaskList(TodoTaskList $taskList): void
+    {
+        $this->taskList = $taskList;
     }
 
     public function getCategoryId(): string
@@ -50,13 +86,13 @@ final class TodoTask extends Task
         return $this->state;
     }
 
-    public function setTaskList(TodoTaskListInterface $taskList): void
-    {
-        $this->taskList = $taskList;
-    }
-
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    public function setTimer(Pomodoro $timer): void
+    {
+        $this->timer = $timer;
     }
 }

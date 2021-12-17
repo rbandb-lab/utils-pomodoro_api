@@ -25,7 +25,7 @@ final class UnplannedTask extends Task
      *     inversedBy="tasks"
      * )
      */
-    private UnplannedTaskListInterface $taskList;
+    private UnplannedTaskList $taskList;
 
     /**
      * @ORM\Column(type="boolean")

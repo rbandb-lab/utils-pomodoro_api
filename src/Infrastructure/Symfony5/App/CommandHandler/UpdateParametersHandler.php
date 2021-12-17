@@ -11,7 +11,7 @@ use Pomodoro\Domain\Worker\UseCase\Parameters\UpdateParametersPresenter;
 use Pomodoro\Domain\Worker\UseCase\Parameters\UpdateParametersRequest;
 use Symfony5\Http\UI\Validation\Dto\UpdateParametersDto;
 
-class UpdateParametersHandler
+final class UpdateParametersHandler
 {
     private CycleParametersValidator $validator;
     private WorkerRepository $workerRepository;

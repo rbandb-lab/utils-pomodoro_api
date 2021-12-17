@@ -12,8 +12,6 @@ final class TodoTaskList extends AbstractTaskList implements TodoTaskListInterfa
 {
     public string $id;
 
-    private ?TodoTaskInterface $currentTask = null;
-
     public function __construct(string $id)
     {
         $this->id = $id;
@@ -24,9 +22,21 @@ final class TodoTaskList extends AbstractTaskList implements TodoTaskListInterfa
         return $this->id;
     }
 
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
     public function recordInterruption(Interruption $interruption): void
     {
-        $this->currentTask->recordInterruption($interruption);
+        $taskId = $interruption->getTaskId();
+        $taskToInterrupt = null;
+        foreach ($this->tasks as $task) {
+            if ($task->getId() === $taskId) {
+                $taskToInterrupt = $task;
+            };
+        }
+        $taskToInterrupt->recordInterruption($interruption);
     }
 
     public function addTask(Task $task): void
@@ -45,10 +55,5 @@ final class TodoTaskList extends AbstractTaskList implements TodoTaskListInterfa
     public function setTasks(array $tasks): void
     {
         $this->tasks = $tasks;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
     }
 }
