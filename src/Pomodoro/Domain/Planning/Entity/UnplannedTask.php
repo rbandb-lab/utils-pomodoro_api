@@ -10,10 +10,10 @@ final class UnplannedTask extends Task
     private bool $urgent = false;
 
     public function __construct(
-        string $id,
-        string $name,
-        bool $urgent,
-        ?string $categoryId = null,
+        string     $id,
+        string     $name,
+        bool       $urgent,
+        ?string    $categoryId = null,
         ?\DateTime $deadline = null
     ) {
         parent::__construct($id, $name, $categoryId);
@@ -31,13 +31,13 @@ final class UnplannedTask extends Task
         return $this->deadline;
     }
 
+    public function setDeadline(\DateTime $dateTime): void
+    {
+        $this->deadline = $dateTime;
+    }
+
     public function setCategoryId(string $id): void
     {
         $this->categoryId = $id;
-    }
-
-    public function setDeadline(\DateTimeInterface $dateTime): void
-    {
-        $this->deadline = $dateTime;
     }
 }

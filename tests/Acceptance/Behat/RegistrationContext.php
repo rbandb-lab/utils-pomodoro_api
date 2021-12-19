@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PomodoroTests\Acceptance\Behat;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Pomodoro\Domain\Worker\Factory\RegistrationTokenFactory;
@@ -41,17 +40,18 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
     private WorkerRepository $workerRepository;
 
     public function __construct(
-        EmailValidator $emailValidator,
-        IdGenerator $idGenerator,
+        EmailValidator           $emailValidator,
+        IdGenerator              $idGenerator,
         RegistrationTokenFactory $tokenFactory,
-        HttpClientInterface $httpClient,
-        MessageBusInterface $eventBus,
-        WorkerFactory $workerFactory,
-        WorkerRepository $workerRepository,
-        array $defaultCycleParameters,
-        string $mailhogApi,
-        string $mailhogClean
-    ) {
+        HttpClientInterface      $httpClient,
+        MessageBusInterface      $eventBus,
+        WorkerFactory            $workerFactory,
+        WorkerRepository         $workerRepository,
+        array                    $defaultCycleParameters,
+        string                   $mailhogApi,
+        string                   $mailhogClean
+    )
+    {
         $this->workerRepository = $workerRepository;
         $this->idGenerator = $idGenerator;
         $this->tokenFactory = $tokenFactory;
@@ -77,13 +77,13 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
      */
     public function noUsersExists()
     {
-        $results = $this->workerRepository->getAll();
-        if (count($results)>0) {
+        $results = $this->workerRepository->findAll();
+        if (count($results) > 0) {
             foreach ($results as $worker) {
                 $this->workerRepository->remove($worker);
             }
         }
-        assertEmpty($this->workerRepository->getAll());
+        assertEmpty($this->workerRepository->findAll());
     }
 
     /**
@@ -99,10 +99,10 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
         $password = $userData[2];
 
         $registerRequest = new RegisterRequest($email);
-        $registerRequest->pomodoroDuration = array_key_exists(3, $userData) ? (int) $userData[3] : null;
-        $registerRequest->longBreakDuration = array_key_exists(4, $userData) ? (int) $userData[4] : null;
-        $registerRequest->shortBreakDuration = array_key_exists(5, $userData) ? (int) $userData[5] : null;
-        $registerRequest->startFirstTaskAfter = array_key_exists(6, $userData) ? (int) $userData[6] : null;
+        $registerRequest->pomodoroDuration = array_key_exists(3, $userData) ? (int)$userData[3] : null;
+        $registerRequest->longBreakDuration = array_key_exists(4, $userData) ? (int)$userData[4] : null;
+        $registerRequest->shortBreakDuration = array_key_exists(5, $userData) ? (int)$userData[5] : null;
+        $registerRequest->startFirstTaskAfter = array_key_exists(6, $userData) ? (int)$userData[6] : null;
         $registerCase = new Register(
             $this->idGenerator,
             $this->workerFactory,
@@ -168,7 +168,7 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
     {
         $error = array_shift($this->response->errors);
         assertInstanceOf(Error::class, $error);
-        assertEquals($arg1, (string) $error);
+        assertEquals($arg1, (string)$error);
     }
 
     public function viewModel()

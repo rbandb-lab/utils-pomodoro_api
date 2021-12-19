@@ -6,7 +6,6 @@ namespace PomodoroTests\Acceptance\Behat;
 
 use Behat\Behat\Context\Context;
 use Pomodoro\Domain\Worker\Entity\Worker;
-use Pomodoro\Domain\Worker\Entity\WorkerRepository;
 use Pomodoro\Domain\Worker\Service\AuthenticationGateway;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
@@ -14,14 +13,10 @@ use function PHPUnit\Framework\assertTrue;
 final class AuthContext implements Context
 {
     private AuthenticationGateway $authenticationGateway;
-    private WorkerRepository $workerRepository;
 
-    public function __construct(
-        AuthenticationGateway $authenticationGateway,
-        WorkerRepository $workerRepository
-    ) {
+    public function __construct(AuthenticationGateway $authenticationGateway)
+    {
         $this->authenticationGateway = $authenticationGateway;
-        $this->workerRepository = $workerRepository;
     }
 
     /**

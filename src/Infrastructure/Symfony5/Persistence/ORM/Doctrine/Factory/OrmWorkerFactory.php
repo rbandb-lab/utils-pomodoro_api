@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Symfony5\Persistence\ORM\Doctrine\Factory;
 
 use Pomodoro\Domain\Worker\Entity\Worker;
-use Symfony5\Persistence\ORM\Doctrine\Entity\ActivityInventory as OrmInventory;
 use Symfony5\Persistence\ORM\Doctrine\Entity\OrmWorker;
 
 final class OrmWorkerFactory
@@ -26,11 +25,8 @@ final class OrmWorkerFactory
         );
 
         $ormActivityInventory = $ormWorker->getActivityInventory();
-
-        if ($ormActivityInventory instanceof OrmInventory) {
-            $activityInventory = OrmInventoryFactory::fromOrm($ormActivityInventory);
-            $worker->setActivityInventory($activityInventory);
-        };
+        $activityInventory = OrmInventoryFactory::fromOrm($ormActivityInventory);
+        $worker->setActivityInventory($activityInventory);
 
         return $worker;
     }

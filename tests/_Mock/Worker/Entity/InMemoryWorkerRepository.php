@@ -31,11 +31,6 @@ class InMemoryWorkerRepository implements WorkerRepository
         return count($result) === 0 ? null : array_shift($result);
     }
 
-    public function getAll(): array
-    {
-        return $this->workers;
-    }
-
     public function remove(Worker $worker): void
     {
         unset($this->workers[$worker->getId()]);
@@ -102,6 +97,11 @@ class InMemoryWorkerRepository implements WorkerRepository
      * @return array
      */
     public function getWorkers(): array
+    {
+        return $this->workers;
+    }
+
+    public function findAll()
     {
         return $this->workers;
     }

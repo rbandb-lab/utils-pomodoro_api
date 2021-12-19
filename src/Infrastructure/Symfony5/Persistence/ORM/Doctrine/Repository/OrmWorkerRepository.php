@@ -61,11 +61,6 @@ final class OrmWorkerRepository extends ServiceEntityRepository implements Worke
         return null;
     }
 
-    public function getAll(): array
-    {
-        // TODO: Implement getAll() method.
-    }
-
     public function remove(Worker $worker): void
     {
         // TODO: Implement remove() method.

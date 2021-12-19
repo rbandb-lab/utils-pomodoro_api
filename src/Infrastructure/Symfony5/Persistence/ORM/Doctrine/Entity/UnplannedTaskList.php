@@ -56,4 +56,9 @@ class UnplannedTaskList
     {
         return $this->tasks;
     }
+
+    public function getActivityInventory(): ActivityInventory
+    {
+        return $this->activityInventory;
+    }
 }

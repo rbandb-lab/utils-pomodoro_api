@@ -16,8 +16,6 @@ interface WorkerRepository
 
     public function getByUsername(string $username): ?Worker;
 
-    public function getAll(): array;
-
     public function remove(Worker $worker): void;
 
     public function getWorkerCycleParameters(string $workerId): ?CycleParameters;
@@ -29,4 +27,6 @@ interface WorkerRepository
     public function updateWorkerEmailState(Worker $worker);
 
     public function getWorkers(): array;
+
+    public function findAll();
 }
