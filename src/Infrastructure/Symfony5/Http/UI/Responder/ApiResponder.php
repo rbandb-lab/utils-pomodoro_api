@@ -51,6 +51,7 @@ abstract class ApiResponder
     private function send(array $params, array $data, int $statusCode): Response
     {
         $response = new Response(null, Response::HTTP_OK);
+        /** @phpstan-ignore-next-line */
         $normalizedData = $this->serializer->normalize(['data' => $data], 'json', $params);
         $contentType = $params['content-type'];
         $locale = $params['locale'];

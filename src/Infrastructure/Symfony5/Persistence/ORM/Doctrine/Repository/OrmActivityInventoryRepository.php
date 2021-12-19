@@ -7,6 +7,7 @@ namespace Symfony5\Persistence\ORM\Doctrine\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
+use Pomodoro\Domain\Planning\Entity\CalendarTask;
 use Pomodoro\Domain\Planning\Entity\TodoTask;
 use Pomodoro\Domain\Planning\Entity\UnplannedTask;
 use Pomodoro\Domain\Planning\Model\TodoTaskListInterface;
@@ -176,5 +177,10 @@ EOF;
 
         $em->persist($ormTask);
         $em->flush();
+    }
+
+    public function addCalendarTaskToWorker(string $workerId, CalendarTask $task)
+    {
+        // TODO: Implement addCalendarTaskToWorker() method.
     }
 }

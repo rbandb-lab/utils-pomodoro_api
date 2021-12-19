@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PomodoroTests\_Mock\Worker\Entity;
 
+use Pomodoro\Domain\Planning\Entity\CalendarTask;
 use Pomodoro\Domain\Planning\Entity\TodoTask;
 use Pomodoro\Domain\Planning\Entity\UnplannedTask;
 use Pomodoro\Domain\Planning\Model\TodoTaskListInterface;
@@ -102,5 +103,9 @@ class InMemoryActivityInventoryRepository implements ActivityInventoryRepository
     public function get(string $id): ?ActivityInventory
     {
         return array_key_exists($id, $this->inventories) ? $this->inventories[$id] : null;
+    }
+
+    public function addCalendarTaskToWorker(string $workerId, CalendarTask $task)
+    {
     }
 }
