@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Symfony5\Http\UI\Action\Tracking;
 
 use Pomodoro\Presentation\Worker\Timer\StartTimerPresenter;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -17,18 +16,15 @@ use Symfony5\Persistence\ORM\Doctrine\Entity\OrmWorker;
 
 final class StartTimerAction
 {
-    private FormFactoryInterface $formFactory;
     private HttpRequestValidator $httpRequestValidator;
     private StartTimerHandler $startTimerHandler;
     private StartTimerResponder $responder;
 
     public function __construct(
-        FormFactoryInterface $formFactory,
         HttpRequestValidator $httpRequestValidator,
         StartTimerHandler    $startTimerHandler,
         StartTimerResponder  $responder
     ) {
-        $this->formFactory = $formFactory;
         $this->httpRequestValidator = $httpRequestValidator;
         $this->startTimerHandler = $startTimerHandler;
         $this->responder = $responder;

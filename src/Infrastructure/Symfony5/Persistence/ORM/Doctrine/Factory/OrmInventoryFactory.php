@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony5\Persistence\ORM\Doctrine\Factory;
 
 use Pomodoro\Domain\Worker\Entity\ActivityInventory;
+use Pomodoro\Domain\Worker\Entity\ActivityInventoryInterface;
 use Symfony5\Persistence\ORM\Doctrine\Entity\ActivityInventory as OrmInventory;
 
 final class OrmInventoryFactory
@@ -24,10 +25,10 @@ final class OrmInventoryFactory
         $inventory->setCalendarTaskList($calendarTaskList);
         $inventory->setUnplannedTaskList($unplannedTaskList);
 
-        return  $inventory;
+        return $inventory;
     }
 
-    public static function toOrm(ActivityInventory $activityInventory): OrmInventory
+    public static function toOrm(ActivityInventoryInterface $activityInventory): OrmInventory
     {
         $ormInventory = new OrmInventory(
             $activityInventory->getId()

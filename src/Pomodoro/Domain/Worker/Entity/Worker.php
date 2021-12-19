@@ -98,7 +98,7 @@ final class Worker
         }
     }
 
-    public function getActivityInventory(): ?ActivityInventory
+    public function getActivityInventory(): ?ActivityInventoryInterface
     {
         return $this->activityInventory;
     }
