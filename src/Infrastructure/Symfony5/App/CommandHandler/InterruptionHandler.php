@@ -11,7 +11,6 @@ final class InterruptionHandler
 {
     public function handle(InterruptionDto $dto, InterruptionPresenter $presenter): InterruptionPresenter
     {
-        dd($dto);
         return $presenter;
     }
 }
