@@ -26,8 +26,7 @@ final class Worker
         ?int   $shortBreakDuration = 300,
         ?int   $longBreakDuration = 300,
         ?int   $startFirstTaskIn = 1500
-    )
-    {
+    ) {
         $this->id = $id;
         $this->username = $username;
         $this->firstName = $firstName;
