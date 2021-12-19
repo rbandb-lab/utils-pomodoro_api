@@ -26,7 +26,8 @@ final class Worker
         ?int   $shortBreakDuration = 300,
         ?int   $longBreakDuration = 300,
         ?int   $startFirstTaskIn = 1500
-    ) {
+    )
+    {
         $this->id = $id;
         $this->username = $username;
         $this->firstName = $firstName;
@@ -98,7 +99,7 @@ final class Worker
         }
     }
 
-    public function getActivityInventory(): ActivityInventoryInterface
+    public function getActivityInventory(): ?ActivityInventory
     {
         return $this->activityInventory;
     }
