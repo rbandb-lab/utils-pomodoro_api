@@ -19,8 +19,7 @@ final class InterruptionRequest
         bool    $urgent,
         string  $type,
         ?string $newTaskName = ''
-    ): void
-    {
+    ): void {
         $this->workerId = $workerId;
         $this->urgent = $urgent;
         $this->type = $type;
