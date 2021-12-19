@@ -25,19 +25,10 @@ class OrmActivityInventoryRepository extends ServiceEntityRepository implements 
         parent::__construct($registry, OrmActivityInventory::class);
     }
 
-    public function get(string $id): ?ActivityInventory
-    {
-        $qb = $this->createQueryBuilder('inventory');
-        $qb->where('inventory.id = :inventoryId')
-            ->setParameter('inventoryId', $id);
-        return $qb->getQuery()->getSingleResult();
-    }
-
     public function save(ActivityInventoryInterface $inventory): void
     {
         // TODO: Implement save() method.
     }
-
 
     public function addTodoTaskToWorker(string $workerId, TodoTask $task): void
     {
@@ -51,7 +42,7 @@ EOF;
         $resultSet = $stmt->executeQuery();
         $data = $resultSet->fetchAssociative();
         if ($data !== false && array_key_exists('todo_task_list_id', $data)) {
-            $todoListId =  $data['todo_task_list_id'];
+            $todoListId = $data['todo_task_list_id'];
             $sql = <<< EOF
 INSERT INTO todo_task (id, name, state, task_list_id, category_id) VALUES (?, ?, ?, ?, ?);
 EOF;
@@ -95,7 +86,7 @@ EOF;
         $resultSet = $stmt->executeQuery();
         $data = $resultSet->fetchAssociative();
         if ($data !== false && array_key_exists('unplanned_task_list_id', $data)) {
-            $unplannedTaskListId =  $data['unplanned_task_list_id'];
+            $unplannedTaskListId = $data['unplanned_task_list_id'];
             $sql = <<< EOF
 INSERT INTO unplanned_task (id, name, state, task_list_id, category_id, urgent, deadline) VALUES (?, ?, ?, ?, ?, ?, ?);
 EOF;
@@ -133,6 +124,16 @@ EOF;
 
     public function getTodoTaskList(string $inventoryId): TodoTaskListInterface
     {
+        $inventory = $this->get($inventoryId);
+        return $inventory->getTodoTaskList();
+    }
+
+    public function get(string $id): ?ActivityInventory
+    {
+        $qb = $this->createQueryBuilder('inventory');
+        $qb->where('inventory.id = :inventoryId')
+            ->setParameter('inventoryId', $id);
+        return $qb->getQuery()->getSingleResult();
     }
 
     public function getByWorkerId(string $workerId): ?ActivityInventory
@@ -153,8 +154,7 @@ EOF;
             ->select('tasks')
             ->from(OrmTodoTask::class, 'tasks')
             ->where('tasks.id = :taskId')
-            ->setParameter('taskId', $taskId)
-        ;
+            ->setParameter('taskId', $taskId);
         return OrmTodoTaskFactory::fromDto($qb->getQuery()->getResult());
     }
 

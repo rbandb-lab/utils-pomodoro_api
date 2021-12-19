@@ -48,8 +48,7 @@ final class TodoTaskList extends AbstractTaskList implements TodoTaskListInterfa
 
     public function startTask(TodoTaskInterface $todoTask): void
     {
-        $todoTask->start();
-        $this->currentTask = $todoTask;
+        $todoTask->start(new \DateTime());
     }
 
     public function setTasks(array $tasks): void

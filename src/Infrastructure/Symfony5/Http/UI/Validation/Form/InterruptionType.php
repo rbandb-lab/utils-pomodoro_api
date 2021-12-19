@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Symfony5\Http\UI\Validation\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony5\Http\UI\Validation\Dto\InterruptionDto;
 
 final class InterruptionType
 {

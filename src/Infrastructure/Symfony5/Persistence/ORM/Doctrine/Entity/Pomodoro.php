@@ -35,6 +35,11 @@ class Pomodoro
         $this->startedAt = $startedAt;
     }
 
+    public function getRingsAt(): ?\DateTimeImmutable
+    {
+        return $this->ringsAt;
+    }
+
     public function setRingsAt(?\DateTimeImmutable $ringsAt): void
     {
         $this->ringsAt = $ringsAt;

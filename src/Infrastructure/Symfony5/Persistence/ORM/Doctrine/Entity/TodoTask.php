@@ -91,6 +91,11 @@ final class TodoTask extends Task
         $this->state = $state;
     }
 
+    public function getTimer(): Pomodoro
+    {
+        return $this->timer;
+    }
+
     public function setTimer(Pomodoro $timer): void
     {
         $this->timer = $timer;

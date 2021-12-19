@@ -60,4 +60,9 @@ class TodoTaskList
     {
         return $this->tasks;
     }
+
+    public function getActivityInventory(): ActivityInventory
+    {
+        return $this->activityInventory;
+    }
 }

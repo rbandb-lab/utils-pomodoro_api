@@ -26,4 +26,28 @@ final class CalendarTask extends Task
      * )
      */
     private Collection $taskList;
+
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getTaskList(): Collection
+    {
+        return $this->taskList;
+    }
+
+    public function setTaskList(Collection $taskList): void
+    {
+        $this->taskList = $taskList;
+    }
 }

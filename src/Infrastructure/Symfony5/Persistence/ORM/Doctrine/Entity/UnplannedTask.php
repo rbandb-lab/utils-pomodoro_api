@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Symfony5\Persistence\ORM\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Pomodoro\Domain\Planning\Model\UnplannedTaskListInterface;
 
 /**
  * @ORM\Entity
@@ -45,5 +44,35 @@ final class UnplannedTask extends Task
         $this->categoryId = $categoryId;
         $this->state = $state;
         $this->deadline = $deadline;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getTaskList(): UnplannedTaskList
+    {
+        return $this->taskList;
+    }
+
+    public function setTaskList(UnplannedTaskList $taskList): void
+    {
+        $this->taskList = $taskList;
+    }
+
+    public function isUrgent(): bool
+    {
+        return $this->urgent;
+    }
+
+    public function setUrgent(bool $urgent): void
+    {
+        $this->urgent = $urgent;
+    }
+    
+    public function getDeadline(): ?\DateTimeImmutable
+    {
+        return $this->deadline;
     }
 }

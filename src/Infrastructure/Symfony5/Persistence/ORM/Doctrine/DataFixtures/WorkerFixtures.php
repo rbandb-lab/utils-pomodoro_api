@@ -4,7 +4,7 @@ namespace Symfony5\Persistence\ORM\Doctrine\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
+use Faker\Factory as FakerFactory;
 use Symfony5\Persistence\ORM\Doctrine\Entity\OrmWorker;
 
 final class WorkerFixtures extends Fixture
@@ -18,10 +18,9 @@ final class WorkerFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $fakerFactory = new Factory();
-        $faker = $fakerFactory->create();
+        $faker = FakerFactory::create();
 
-        for ($i=0; $i<10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $user = new OrmWorker(
                 $faker->uuid(),
                 $faker->email(),
