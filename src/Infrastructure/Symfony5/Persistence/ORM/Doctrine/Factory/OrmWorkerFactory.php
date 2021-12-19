@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony5\Persistence\ORM\Doctrine\Factory;
 
+use Pomodoro\Domain\Worker\Entity\ActivityInventoryInterface;
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Symfony5\Persistence\ORM\Doctrine\Entity\OrmWorker;
 
@@ -40,6 +41,10 @@ final class OrmWorkerFactory
         );
 
         $inventory = $worker->getActivityInventory();
+        if (!$inventory instanceof ActivityInventoryInterface) {
+            throw new \LogicException(__METHOD__ . '. ActivityInventory::Class expected ');
+        }
+
         $ormInventory = OrmInventoryFactory::toOrm($inventory);
 
         $ormWorker->setPassword($worker->getPassword());
