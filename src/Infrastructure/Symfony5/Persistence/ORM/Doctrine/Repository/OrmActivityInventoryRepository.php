@@ -9,11 +9,14 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 use Pomodoro\Domain\Planning\Entity\TodoTask;
 use Pomodoro\Domain\Planning\Entity\UnplannedTask;
+use Pomodoro\Domain\Planning\Model\TodoTaskListInterface;
 use Pomodoro\Domain\Worker\Entity\ActivityInventory;
 use Pomodoro\Domain\Worker\Entity\ActivityInventoryInterface;
 use Pomodoro\Domain\Worker\Entity\ActivityInventoryRepository;
 use Symfony5\Persistence\ORM\Doctrine\Entity\ActivityInventory as OrmActivityInventory;
-use Symfony5\Persistence\ORM\Doctrine\Entity\UnplannedTask as OrmUnplannedTask;
+use Symfony5\Persistence\ORM\Doctrine\Entity\Pomodoro;
+use Symfony5\Persistence\ORM\Doctrine\Entity\TodoTask as OrmTodoTask;
+use Symfony5\Persistence\ORM\Doctrine\Factory\OrmTodoTaskFactory;
 
 class OrmActivityInventoryRepository extends ServiceEntityRepository implements ActivityInventoryRepository
 {
@@ -24,7 +27,10 @@ class OrmActivityInventoryRepository extends ServiceEntityRepository implements 
 
     public function get(string $id): ?ActivityInventory
     {
-        // TODO: Implement get() method.
+        $qb = $this->createQueryBuilder('inventory');
+        $qb->where('inventory.id = :inventoryId')
+            ->setParameter('inventoryId', $id);
+        return $qb->getQuery()->getSingleResult();
     }
 
     public function save(ActivityInventoryInterface $inventory): void
@@ -123,5 +129,52 @@ EOF;
 
             $conn->close();
         }
+    }
+
+    public function getTodoTaskList(string $inventoryId): TodoTaskListInterface
+    {
+    }
+
+    public function getByWorkerId(string $workerId): ?ActivityInventory
+    {
+        $qb = $this->createQueryBuilder('inventory');
+        $qb
+            ->innerJoin('inventory.worker', 'w')
+            ->where('w.id = :workerId')
+            ->setParameter('workerId', $workerId);
+
+        return $qb->getQuery()->getSingleResult();
+    }
+
+    public function getTodoTaskById(string $taskId): ?TodoTask
+    {
+        $qb = $this->createQueryBuilder('inventory');
+        $qb
+            ->select('tasks')
+            ->from(OrmTodoTask::class, 'tasks')
+            ->where('tasks.id = :taskId')
+            ->setParameter('taskId', $taskId)
+        ;
+        return OrmTodoTaskFactory::fromDto($qb->getQuery()->getResult());
+    }
+
+    public function saveTodoTask(TodoTask $todoTask): void
+    {
+        $em = $this->getEntityManager();
+        $ormTask = $em->find(OrmTodoTask::class, $todoTask->getId());
+
+        $startedAt = (new \DateTimeImmutable())->setTimestamp($todoTask->getStartTask());
+        $ringsAt = (new \DateTimeImmutable())->setTimestamp($todoTask->getTimer()->getEndTs());
+
+        $ormTask->setStartTask($startedAt);
+
+        $timer = new Pomodoro();
+        $timer->setStartedAt($startedAt);
+        $timer->setRingsAt($ringsAt);
+
+        $ormTask->setTimer($timer);
+
+        $em->persist($ormTask);
+        $em->flush();
     }
 }

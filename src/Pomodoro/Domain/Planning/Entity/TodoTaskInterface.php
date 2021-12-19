@@ -8,7 +8,7 @@ use Pomodoro\Domain\Tracking\Entity\Interruption;
 
 interface TodoTaskInterface
 {
-    public function start(): void;
+    public function start(\DateTime $now): void;
 
     public function finish(): void;
 

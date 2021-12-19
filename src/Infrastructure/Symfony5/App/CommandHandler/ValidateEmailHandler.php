@@ -10,7 +10,7 @@ use Pomodoro\Domain\Worker\UseCase\ValidateEmail\ValidateEmailPresenter;
 use Pomodoro\Domain\Worker\UseCase\ValidateEmail\ValidateEmailRequest;
 use Symfony5\Http\UI\Validation\Dto\ValidateEmailDto;
 
-class ValidateEmailHandler
+final class ValidateEmailHandler
 {
     private WorkerRepository $workerRepository;
 

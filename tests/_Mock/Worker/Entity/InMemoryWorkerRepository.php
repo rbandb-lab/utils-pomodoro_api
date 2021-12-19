@@ -7,6 +7,7 @@ namespace PomodoroTests\_Mock\Worker\Entity;
 use Pomodoro\Domain\Worker\Entity\AbstractToken;
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\Entity\WorkerRepository;
+use Pomodoro\Domain\Worker\Model\CycleParameters;
 use function PHPUnit\Framework\assertInstanceOf;
 
 class InMemoryWorkerRepository implements WorkerRepository

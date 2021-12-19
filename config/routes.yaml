@@ -57,6 +57,6 @@ timer_void:
   methods: ['POST']
 
 manage_interruption:
-  path: /api/interruption
+  path: /api/interruption/{taskId}
   controller: Symfony5\Http\UI\Action\Tracking\InterruptionAction
   methods: ['POST']

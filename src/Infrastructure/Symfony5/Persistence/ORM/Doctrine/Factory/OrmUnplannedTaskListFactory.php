@@ -12,8 +12,8 @@ final class OrmUnplannedTaskListFactory
 {
     public static function fromOrm(OrmUnplannedTaskList $ormTaskList): UnplannedTaskList
     {
-        $tasks = $ormTaskList->getTasksArray();
         $unplannedTaskList = new UnplannedTaskList($ormTaskList->getId());
+        $tasks = $ormTaskList->getTasks()->toArray();
         $unplannedTaskList->setTasks($tasks);
 
         return $unplannedTaskList;

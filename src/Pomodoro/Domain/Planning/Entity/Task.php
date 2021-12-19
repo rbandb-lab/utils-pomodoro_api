@@ -44,4 +44,12 @@ abstract class Task
     {
         return $this->status;
     }
+
+    /**
+     * @param string|null $status
+     */
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
+    }
 }

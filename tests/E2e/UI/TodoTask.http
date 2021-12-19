@@ -1,0 +1,6 @@
+POST http://pomodoro.dev.local/api/todo-task
+Authorization: Bearer {{auth_token}}
+
+{
+    "taskName": "toto"
+}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony5\Http\UI\Validation\Dto;
 
-class UpdateParametersDto
+final class UpdateParametersDto
 {
     public string $workerId;
     public ?int $pomodoroDuration = null;

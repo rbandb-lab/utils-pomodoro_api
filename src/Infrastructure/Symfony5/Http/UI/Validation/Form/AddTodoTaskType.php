@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony5\Http\UI\Validation\Dto\AddTodoTaskDto;
 
-class AddTodoTaskType extends AbstractType
+final class AddTodoTaskType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {

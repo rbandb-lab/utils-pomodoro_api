@@ -27,12 +27,12 @@ final class Register
     private RegistrationTokenFactory $tokenFactory;
 
     public function __construct(
-        IdGenerator $idGenerator,
-        WorkerFactory $workerFactory,
-        WorkerRepository $workerRepository,
-        EmailValidator $emailValidator,
+        IdGenerator              $idGenerator,
+        WorkerFactory            $workerFactory,
+        WorkerRepository         $workerRepository,
+        EmailValidator           $emailValidator,
         RegistrationTokenFactory $tokenFactory,
-        array $defaultCycleParameters
+        array                    $defaultCycleParameters
     ) {
         $this->idGenerator = $idGenerator;
         $this->workerFactory = $workerFactory;
@@ -48,37 +48,12 @@ final class Register
         $response = new RegisterResponse();
         $validation = $this->validateRequest($request, $response);
         if (true === $validation) {
-            $cycleValid = $this->cycleParameters($request, $response);
-            if ($cycleValid) {
+            $parameters = $this->createCycle($request);
+            if (self::validateCycle($parameters, $response)) {
                 $this->saveWorker($request, $response);
             }
         }
         $presenter->present($response);
-    }
-
-    public function cycleParameters($request, $response): bool
-    {
-        $defaultCycleParameters = $this->defaultCycleParameters;
-        $request->pomodoroDuration = $request->pomodoroDuration ?? (int) $defaultCycleParameters['pomodoroDuration'];
-        $request->shortBreakDuration = $request->shortBreakDuration ?? (int) $defaultCycleParameters['shortBreakDuration'];
-        $request->longBreakDuration = $request->longBreakDuration ?? (int) $defaultCycleParameters['longBreakDuration'];
-        $request->startFirstTaskAfter = $request->startFirstTaskAfter ?? (int) $defaultCycleParameters['startFirstTaskAfter'];
-
-        $cycleParameters = new CycleParameters(
-            $request->pomodoroDuration,
-            $request->shortBreakDuration,
-            $request->longBreakDuration,
-            $request->startFirstTaskAfter,
-        );
-
-        $validator = new CycleParametersValidator();
-        $result = $validator->validate($cycleParameters);
-
-        if ($result !== true) {
-            $response->errors[] = $result;
-        }
-
-        return true;
     }
 
     private function validateRequest(RegisterRequest $request, RegisterResponse $response): bool
@@ -93,6 +68,7 @@ final class Register
         }
 
         $workerExists = ($this->workerRepository->getByUsername($email)) instanceof Worker;
+
         if ($workerExists) {
             $response->errors[] = new Error('email', 'already registered');
 
@@ -122,13 +98,44 @@ final class Register
         return true;
     }
 
+    /**
+     * @param RegisterRequest $request
+     * @return CycleParameters
+     */
+    public function createCycle(RegisterRequest $request): CycleParameters
+    {
+        $defaultParams = $this->defaultCycleParameters;
+        $request->pomodoroDuration = $request->pomodoroDuration ?? (int)$defaultParams['pomodoroDuration'];
+        $request->shortBreakDuration = $request->shortBreakDuration ?? (int)$defaultParams['shortBreakDuration'];
+        $request->longBreakDuration = $request->longBreakDuration ?? (int)$defaultParams['longBreakDuration'];
+        $request->startFirstTaskAfter = $request->startFirstTaskAfter ?? (int)$defaultParams['startFirstTaskAfter'];
+
+        return new CycleParameters(
+            $request->pomodoroDuration,
+            $request->shortBreakDuration,
+            $request->longBreakDuration,
+            $request->startFirstTaskAfter,
+        );
+    }
+
+    public static function validateCycle(CycleParameters $cycleParameters, RegisterResponse $response): bool
+    {
+        $validator = new CycleParametersValidator();
+        $result = $validator->validate($cycleParameters);
+
+        if ($result !== true) {
+            $response->errors[] = $result;
+        }
+
+        return true;
+    }
+
     private function saveWorker(RegisterRequest $request, RegisterResponse $response): void
     {
         $request->password = $this->workerFactory->hashPassword($request->password);
         $worker = $this->workerFactory->createFromRequest($request);
 
-        $inventoryId = $this->idGenerator->createId();
-        $worker = $this->workerFactory->instanciateInventory($inventoryId, $worker);
+        $worker = $this->workerFactory->instanciateInventory($this->idGenerator->createId(), $worker);
         $token = $this->tokenFactory->createEmailValidationToken($worker->getId());
         $worker->addRegistrationToken($token);
 
@@ -144,7 +151,7 @@ final class Register
                 ]
             );
         } catch (\Exception $exception) {
-            $response->errors[] = new Error('save-worker', __METHOD__.' '.$exception->getMessage());
+            $response->errors[] = new Error('save-worker', __METHOD__ . ' ' . $exception->getMessage());
         }
     }
 }

@@ -27,4 +27,6 @@ interface WorkerRepository
     public function updateCycleParametersForWorker(string $workerId, CycleParameters $cycleParameters);
 
     public function updateWorkerEmailState(Worker $worker);
+
+    public function getWorkers(): array;
 }
