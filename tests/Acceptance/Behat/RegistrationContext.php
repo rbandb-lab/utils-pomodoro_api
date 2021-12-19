@@ -50,8 +50,7 @@ final class RegistrationContext implements Context, RegisterPresenter, ValidateE
         array                    $defaultCycleParameters,
         string                   $mailhogApi,
         string                   $mailhogClean
-    )
-    {
+    ) {
         $this->workerRepository = $workerRepository;
         $this->idGenerator = $idGenerator;
         $this->tokenFactory = $tokenFactory;

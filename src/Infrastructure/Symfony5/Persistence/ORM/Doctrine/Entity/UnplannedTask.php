@@ -70,7 +70,7 @@ final class UnplannedTask extends Task
     {
         $this->urgent = $urgent;
     }
-    
+
     public function getDeadline(): ?\DateTimeImmutable
     {
         return $this->deadline;
