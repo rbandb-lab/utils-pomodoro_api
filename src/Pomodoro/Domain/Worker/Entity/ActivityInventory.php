@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\Entity;
 
+use Pomodoro\Domain\Planning\Entity\CalendarTask;
 use Pomodoro\Domain\Planning\Entity\TodoTask;
 use Pomodoro\Domain\Planning\Entity\UnplannedTask;
 use Pomodoro\Domain\Planning\Model\CalendarTaskList;
@@ -22,9 +23,9 @@ final class ActivityInventory implements ActivityInventoryInterface
     {
         $this->id = $id;
         $this->workerId = $workerId;
-        $this->todoTaskList = new TodoTaskList();
-        $this->unplannedTaskList = new UnplannedTaskList();
-        $this->calendarTaskList = new CalendarTaskList();
+        $this->todoTaskList = new TodoTaskList($id);
+        $this->unplannedTaskList = new UnplannedTaskList($id);
+        $this->calendarTaskList = new CalendarTaskList($id);
     }
 
     public function getId(): string
@@ -72,5 +73,30 @@ final class ActivityInventory implements ActivityInventoryInterface
             'unplannedTaskList' => $this->getUnplannedTaskList()->toArray(),
             'calendarTaskList' => $this->getCalendarTaskList()->toArray(),
         ];
+    }
+
+    public function getWorkerId(): string
+    {
+        return $this->workerId;
+    }
+
+    public function setTodoTaskList(TodoTaskList $todoTaskList): void
+    {
+        $this->todoTaskList = $todoTaskList;
+    }
+
+    public function setUnplannedTaskList(UnplannedTaskList $unplannedTaskList): void
+    {
+        $this->unplannedTaskList = $unplannedTaskList;
+    }
+
+    public function setCalendarTaskList(CalendarTaskList $calendarTaskList): void
+    {
+        $this->calendarTaskList = $calendarTaskList;
+    }
+
+    public function addCalendarTaskToWorker(string $workerId, CalendarTask $task)
+    {
+        // TODO: Implement addCalendarTaskToWorker() method.
     }
 }

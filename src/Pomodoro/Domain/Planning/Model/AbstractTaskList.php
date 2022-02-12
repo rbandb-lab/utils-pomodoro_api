@@ -28,6 +28,7 @@ abstract class AbstractTaskList implements TaskList
         // TODO: Implement removeTask() method.
     }
 
+
     public function toArray(): array
     {
         return [

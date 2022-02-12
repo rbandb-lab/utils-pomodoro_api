@@ -6,14 +6,14 @@ namespace Pomodoro\Domain\Planning\Entity;
 
 final class UnplannedTask extends Task
 {
-    private ?\DateTimeInterface $deadline;
+    private ?\DateTime $deadline;
     private bool $urgent = false;
 
     public function __construct(
-        string $id,
-        string $name,
-        bool $urgent,
-        ?string $categoryId = null,
+        string     $id,
+        string     $name,
+        bool       $urgent,
+        ?string    $categoryId = null,
         ?\DateTime $deadline = null
     ) {
         parent::__construct($id, $name, $categoryId);
@@ -26,18 +26,18 @@ final class UnplannedTask extends Task
         return $this->urgent;
     }
 
-    public function getDeadline(): ?int
+    public function getDeadline(): ?\DateTime
     {
-        return $this->deadline?->getTimestamp();
+        return $this->deadline;
+    }
+
+    public function setDeadline(\DateTime $dateTime): void
+    {
+        $this->deadline = $dateTime;
     }
 
     public function setCategoryId(string $id): void
     {
         $this->categoryId = $id;
-    }
-
-    public function setDeadline(\DateTimeInterface $dateTime): void
-    {
-        $this->deadline = $dateTime;
     }
 }

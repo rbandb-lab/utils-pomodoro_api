@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\Entity;
 
+use Pomodoro\Domain\Planning\Entity\CalendarTask;
 use Pomodoro\Domain\Planning\Entity\TodoTask;
 use Pomodoro\Domain\Planning\Entity\UnplannedTask;
 use Pomodoro\Domain\Planning\Model\CalendarTaskList;
@@ -25,4 +26,8 @@ interface ActivityInventoryInterface
     public function getCalendarTaskList(): CalendarTaskList;
 
     public function toArray(): array;
+
+    public function getId(): string;
+
+    public function addCalendarTaskToWorker(string $workerId, CalendarTask $task);
 }

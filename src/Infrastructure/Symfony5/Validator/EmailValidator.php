@@ -8,7 +8,7 @@ use Egulias\EmailValidator\EmailValidator as EguliasEmailValidator;
 use Egulias\EmailValidator\Validation\RFCValidation;
 use Pomodoro\SharedKernel\Service\EmailValidator as EmailValidatorInterface;
 
-class EmailValidator implements EmailValidatorInterface
+final class EmailValidator implements EmailValidatorInterface
 {
     public function isValid(string $email): bool
     {

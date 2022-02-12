@@ -79,3 +79,21 @@ unit:
 .PHONY: unit-watcher
 unit-watcher:
 	phpunit-watcher watch
+
+.PHONY: purge-db
+purge-db:
+	$(RUN_IN_CONTAINER) sh -c cat "php bin/console d:d:d --force;"
+
+.PHONY: create-db
+create-db:
+	$(RUN_IN_CONTAINER) sh -c cat "php bin/console d:d:c;"
+
+.PHONY: migrations
+migrations:
+	$(RUN_IN_CONTAINER) sh -c cat "php bin/console d:m:m -n;"
+
+.PHONY: db
+db:
+	- make purge-db
+	- make create-db
+	- make migrations

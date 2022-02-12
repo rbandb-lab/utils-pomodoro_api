@@ -21,10 +21,19 @@ final class TodoTask extends Task implements TodoTaskInterface
         parent::__construct($id, $name, $categoryId);
     }
 
-    public function start(): void
+    public function isStarted(): bool
     {
-        $this->timer = new Pomodoro($now = new \DateTime());
+        return $this->startTask !== null;
+    }
+
+    public function start(\DateTime $now): void
+    {
         $this->startTask = $this->startTask ?? $now->getTimestamp();
+    }
+
+    public function timerRingsAt(int $endTimeStamp): void
+    {
+        $this->timer->setEndTs($endTimeStamp);
     }
 
     public function stopTimer(): void
@@ -53,14 +62,38 @@ final class TodoTask extends Task implements TodoTaskInterface
         return $this->interruptions;
     }
 
-    public function getStartTask(): int
+    /**
+     * @param array $interruptions
+     */
+    public function setInterruptions(array $interruptions): void
+    {
+        $this->interruptions = $interruptions;
+    }
+
+    public function getStartTask(): ?int
     {
         return $this->startTask;
     }
 
-    public function getEndTask(): int
+    /**
+     * @param int|null $startTask
+     */
+    public function setStartTask(?int $startTask): void
+    {
+        $this->startTask = $startTask;
+    }
+
+    public function getEndTask(): ?int
     {
         return $this->endTask;
+    }
+
+    /**
+     * @param int|null $endTask
+     */
+    public function setEndTask(?int $endTask): void
+    {
+        $this->endTask = $endTask;
     }
 
     public function getTimer(): ?Pomodoro
@@ -68,8 +101,52 @@ final class TodoTask extends Task implements TodoTaskInterface
         return $this->timer;
     }
 
+    /**
+     * @param Pomodoro|null $timer
+     */
+    public function setTimer(?Pomodoro $timer): void
+    {
+        $this->timer = $timer;
+    }
+
     public function getPomodoros(): array
     {
         return $this->pomodoros;
+    }
+
+    /**
+     * @param array $pomodoros
+     */
+    public function setPomodoros(array $pomodoros): void
+    {
+        $this->pomodoros = $pomodoros;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getCategoryId(): ?string
+    {
+        return $this->categoryId;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param array $voidTimers
+     */
+    public function setVoidTimers(array $voidTimers): void
+    {
+        $this->voidTimers = $voidTimers;
     }
 }

@@ -35,6 +35,7 @@ RUN apk add --no-cache \
         icu-dev \
 		git \
 		gnu-libiconv \
+        libsodium-dev \
         make \
         tzdata \
 	;

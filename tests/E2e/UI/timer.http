@@ -1,0 +1,2 @@
+GET http://pomodoro.dev.local/api/timer/db2a805d-5700-4270-b422-468b8437edeb
+Authorization: Bearer {{auth_token}}

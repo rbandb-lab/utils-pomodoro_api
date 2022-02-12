@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pomodoro\Domain\Worker\Entity;
 
+use Pomodoro\Domain\Worker\Model\CycleParameters;
+
 final class Worker
 {
     private string $id;
@@ -13,17 +15,17 @@ final class Worker
     private CycleParameters $parameters;
     private bool $emailValidated;
     private array $tokens;
-    private ActivityInventoryInterface $activityInventory;
+    private ?ActivityInventoryInterface $activityInventory = null;
 
     public function __construct(
         string $id,
         string $username,
         string $firstName,
         string $password,
-        ?int $pomodoroDuration = 1500,
-        ?int $shortBreakDuration = 300,
-        ?int $longBreakDuration = 300,
-        ?int $startFirstTaskIn = 1500
+        ?int   $pomodoroDuration = 1500,
+        ?int   $shortBreakDuration = 300,
+        ?int   $longBreakDuration = 300,
+        ?int   $startFirstTaskIn = 1500
     ) {
         $this->id = $id;
         $this->username = $username;
@@ -59,9 +61,19 @@ final class Worker
         return $this->parameters;
     }
 
+    public function setParameters(CycleParameters $parameters): void
+    {
+        $this->parameters = $parameters;
+    }
+
     public function isEmailValidated(): bool
     {
         return $this->emailValidated;
+    }
+
+    public function setEmailValidated(bool $emailValidated): void
+    {
+        $this->emailValidated = $emailValidated;
     }
 
     public function getTokens(): array
@@ -86,18 +98,13 @@ final class Worker
         }
     }
 
-    public function setEmailValidated(bool $emailValidated): void
-    {
-        $this->emailValidated = $emailValidated;
-    }
-
-    public function getActivityInventory(): ActivityInventoryInterface
+    public function getActivityInventory(): ?ActivityInventoryInterface
     {
         return $this->activityInventory;
     }
 
-    public function setParameters(CycleParameters $parameters): void
+    public function setActivityInventory(ActivityInventoryInterface $activityInventory): void
     {
-        $this->parameters = $parameters;
+        $this->activityInventory = $activityInventory;
     }
 }

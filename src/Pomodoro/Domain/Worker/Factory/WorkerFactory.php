@@ -6,14 +6,17 @@ namespace Pomodoro\Domain\Worker\Factory;
 
 use Pomodoro\Domain\Worker\Entity\Worker;
 use Pomodoro\Domain\Worker\UseCase\Register\RegisterRequest;
+use Pomodoro\SharedKernel\Service\IdGenerator;
 use Pomodoro\SharedKernel\Service\PasswordHasher;
 
 final class WorkerFactory
 {
+    private IdGenerator $idGenerator;
     private PasswordHasher $passwordHasher;
 
-    public function __construct(PasswordHasher $passwordHasher)
+    public function __construct(IdGenerator $idGenerator, PasswordHasher $passwordHasher)
     {
+        $this->idGenerator = $idGenerator;
         $this->passwordHasher = $passwordHasher;
     }
 
@@ -22,13 +25,8 @@ final class WorkerFactory
         return $this->passwordHasher->hash($plainTextPassword);
     }
 
-    public function createFromRequest(RegisterRequest $request, array $defaultCycleParameters): Worker
+    public function createFromRequest(RegisterRequest $request): Worker
     {
-        $request->pomodoroDuration = $request->pomodoroDuration ?? (int) $defaultCycleParameters['pomodoroDuration'];
-        $request->shortBreakDuration = $request->shortBreakDuration ?? (int) $defaultCycleParameters['shortBreakDuration'];
-        $request->longBreakDuration = $request->longBreakDuration ?? (int) $defaultCycleParameters['longBreakDuration'];
-        $request->startFirstTaskAfter = $request->startFirstTaskAfter ?? (int) $defaultCycleParameters['startFirstTaskAfter'];
-
         return new Worker(
             $request->id,
             $request->email,
@@ -43,7 +41,15 @@ final class WorkerFactory
 
     public function instanciateInventory(string $id, Worker $worker): Worker
     {
-        $inventory = ActivityInventoryFactory::create($id, $worker->getId());
+        $ids = $this->idGenerator->createArrayOfIds(3);
+
+        $inventory = ActivityInventoryFactory::create(
+            $id,
+            $worker->getId(),
+            $ids[0],
+            $ids[1],
+            $ids[2]
+        );
         $worker->attachInventory($inventory);
 
         return $worker;

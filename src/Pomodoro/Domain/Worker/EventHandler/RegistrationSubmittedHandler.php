@@ -9,7 +9,7 @@ use Pomodoro\Domain\Event\Worker\Async\RegistrationSubmitted;
 use Pomodoro\SharedKernel\Service\MailerService;
 use Pomodoro\SharedKernel\Service\RegistrationLinkGenerator;
 
-class RegistrationSubmittedHandler implements EventHandler
+final class RegistrationSubmittedHandler implements EventHandler
 {
     private MailerService $domainMailer;
     private RegistrationLinkGenerator $linkGenerator;

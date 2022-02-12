@@ -1,0 +1,26 @@
+### Login
+POST http://pomodoro.dev.local/api/login
+Content-Type: application/json
+
+{
+  "username" : "janet.doe@example.com",
+  "password" : "dsjkljkldh23"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+
+### Registration
+POST http://pomodoro.dev.local/api/registration
+Content-type: application/json
+Accept: application/json
+
+{
+    "firstName" : "john",
+    "email" : "janet.doe@example.com",
+    "password" : "dsjkljkldh23",
+    "pomodoroDuration": 50,
+    "shortBreakDuration": 50,
+    "longBreakDuration": 15,
+    "startFirstTaskIn": 1500
+}

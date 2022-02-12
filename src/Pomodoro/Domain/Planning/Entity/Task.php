@@ -14,9 +14,9 @@ abstract class Task
     public const COMPLETE = 'COMPLETE';
 
     protected string $id;
-    protected ?string $categoryId = null;
     protected string $name;
-    protected string $status;
+    protected ?string $categoryId = null;
+    protected ?string $status = null;
 
     public function __construct(string $id, string $name, ?string $categoryId = '')
     {
@@ -33,5 +33,23 @@ abstract class Task
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getCategoryId(): ?string
+    {
+        return $this->categoryId;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $status
+     */
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
     }
 }

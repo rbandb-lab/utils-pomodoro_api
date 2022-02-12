@@ -1,9 +1,62 @@
+#INFRA
 home:
-  path: /home
-  controller: Symfony5\Http\UI\Action\HomeAction
+  path: /
+  controller: Symfony5\Http\UI\Action\Worker\HomeAction
   methods: ['GET']
 
+api_login:
+  path: /api/login
+  controller: Symfony5\Http\UI\Action\Worker\LoginAction
+  methods: ['POST']
+
+register:
+  path: /api/registration
+  controller: Symfony5\Http\UI\Action\Worker\RegisterAction
+  methods: [ 'POST' ]
+
 validate:
-  path: /validate/{token}
-  controller: Symfony5\Http\UI\Action\ValidateRegistrationAction
+  path: /api/validate/{token}
+  controller: Symfony5\Http\UI\Action\Worker\ValidateEmailAction
   methods: ['GET']
+
+parameters:
+  path: /api/params
+  controller: Symfony5\Http\UI\Action\Worker\ShowParametersAction
+  methods: ['GET']
+
+update_parameters:
+  path: /api/params
+  controller: Symfony5\Http\UI\Action\Worker\UpdateParametersAction
+  methods: ['PUT']
+
+#PLANNING
+add_calendar_task:
+  path: /api/calendar-task
+  controller: Symfony5\Http\UI\Action\Planning\AddCalendarTaskAction
+  methods: ['POST']
+
+add_todo_task:
+  path: /api/todo-task
+  controller: Symfony5\Http\UI\Action\Planning\AddTodoTaskAction
+  methods: ['POST']
+
+add_unplanned_task:
+  path: /api/unplanned-task
+  controller: Symfony5\Http\UI\Action\Planning\AddUnplannedTaskAction
+  methods: ['POST']
+
+#TRACKING
+timer_start:
+  path: /api/timer/{taskId}
+  controller: Symfony5\Http\UI\Action\Tracking\StartTimerAction
+  methods: ['GET']
+
+timer_void:
+  path: /api/timer/{taskId}
+  controller: Symfony5\Http\UI\Action\Tracking\StartTimerAction
+  methods: ['POST']
+
+manage_interruption:
+  path: /api/interruption/{taskId}
+  controller: Symfony5\Http\UI\Action\Tracking\InterruptionAction
+  methods: ['POST']
