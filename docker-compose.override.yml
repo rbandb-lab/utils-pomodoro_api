@@ -4,4 +4,4 @@ services:
 
   pomodoro_fpm:
     volumes:
-      - "./.docker/php/conf.d/symfony.dev.ini:/usr/local/etc/php/conf.d/symfony.ini:ro"
+      - "./infra_docker/php/conf.d/symfony.dev.ini:/usr/local/etc/php/conf.d/symfony.ini:ro"

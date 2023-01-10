@@ -131,17 +131,17 @@ EOF;
 
     public function get(string $id): ?ActivityInventory
     {
-        $qb = $this->createQueryBuilder('inventory');
-        $qb->where('inventory.id = :inventoryId')
+        $qb = $this->createQueryBuilder('_inventory');
+        $qb->where('_inventory.id = :inventoryId')
             ->setParameter('inventoryId', $id);
         return $qb->getQuery()->getSingleResult();
     }
 
     public function getByWorkerId(string $workerId): ?ActivityInventory
     {
-        $qb = $this->createQueryBuilder('inventory');
+        $qb = $this->createQueryBuilder('_inventory');
         $qb
-            ->innerJoin('inventory.worker', 'w')
+            ->innerJoin('_inventory.worker', 'w')
             ->where('w.id = :workerId')
             ->setParameter('workerId', $workerId);
 
@@ -150,7 +150,7 @@ EOF;
 
     public function getTodoTaskById(string $taskId): ?TodoTask
     {
-        $qb = $this->createQueryBuilder('inventory');
+        $qb = $this->createQueryBuilder('_inventory');
         $qb
             ->select('tasks')
             ->from(OrmTodoTask::class, 'tasks')

@@ -53,7 +53,7 @@ final class ActivityInventoryContext implements Context, ShowActivityInventoryPr
     }
 
     /**
-     * @Given I access my activity inventory
+     * @Given I access my activity _inventory
      */
     public function iAccessMyActivityInventory()
     {
